@@ -26,7 +26,7 @@ nc client
 nc를 통해 받은 데이터를 파싱해서 디코딩해야하기 때문에 nc client를 사용해야 합니다.
 
 
-code-block:: python
+.. code-block:: python
 
     import socket
 
@@ -55,7 +55,7 @@ decode morse
 
 1번 문제의 경우 morse 부호를 디코딩해야 하기 때문에 morse_talk를 사용해서 디코딩을 진행하였습니다. 총 50문제이기 때문에 50번 디코딩을 진행하였습니다.
 
-code-block:: python
+.. code-block:: python
 
     import morse_talk as mtalk
 
@@ -84,7 +84,7 @@ decode rot13
 
 2번 문제의 경우 rot13 디코딩을 해야 하는데 기호까지 같이 디코딩을 진행하여야 하기 때문에 codecs에 있는 rot13이 아닌 직접 string에 있는 maketrans를 이용해서 디코딩을 진행하였습니다.
 
-code-block:: python
+.. code-block:: python
 
     import string
 

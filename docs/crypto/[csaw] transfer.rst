@@ -27,7 +27,7 @@ pcap 내용을 확인해보니 python 코드와 랜덤한 문자열을 확인할
 
 **python 코드**
 
-code-block:: python
+.. code-block:: python
 
 	import string
 	import random
@@ -79,7 +79,7 @@ decode
 
 1번 문제의 경우 morse 부호를 디코딩해야 하기 때문에 morse_talk를 사용해서 디코딩을 진행하였습니다. 총 50문제이기 때문에 50번 디코딩을 진행하였습니다.
 
-code-block:: python
+.. code-block:: python
 
     import morse_talk as mtalk
 
@@ -108,7 +108,7 @@ decode rot13
 
 2번 문제의 경우 rot13 디코딩을 해야 하는데 기호까지 같이 디코딩을 진행하여야 하기 때문에 codecs에 있는 rot13이 아닌 직접 string에 있는 maketrans를 이용해서 디코딩을 진행하였습니다.
 
-code-block:: python
+.. code-block:: python
 
     import string
 
