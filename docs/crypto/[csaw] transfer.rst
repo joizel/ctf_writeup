@@ -50,7 +50,7 @@ pcap 내용을 확인해보니 python 코드와 랜덤한 문자열을 확인할
 
 **random 문자열**
 
-code-block:: console 
+.. code-block:: console 
     
     2Mk16Sk5iakYxVFZoS1RsWnZXbFZa......(중략)
 
