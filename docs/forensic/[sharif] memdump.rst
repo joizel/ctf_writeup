@@ -97,7 +97,7 @@
     1047   0      0      /sbin/getty -8 38400 tty1
     1093   0      0      sshd: user [priv]
     1135   1000   1000   sshd: user@pts/0
-    1136   1000   1000   -bash
+    1136   1000   1000   -bash  <-- suspicious process
     1166   0      0      [kworker/u2:2]
 
 |

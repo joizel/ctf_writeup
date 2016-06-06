@@ -40,7 +40,7 @@
     967    1000   1000   -bash
     8111   0      0      /sbin/udevd --daemon
     8112   0      0      /sbin/udevd --daemon
-    9425   1000   1000   ./asis-ctf
+    9425   1000   1000   ./asis-ctf                     <-- suspicious process
     15584  1000   1000   nano print.cpp
     15629  0      0      [kworker/0:0]
     16346  0      0      /usr/sbin/apache2 -k start
