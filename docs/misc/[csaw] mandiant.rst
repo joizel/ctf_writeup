@@ -40,7 +40,7 @@ base64값을 output.b64로 저장하고 해당 값을 디코드한 값의 헤더
 
 binwalk를 통해 파일을 확인한 결과 7-zip으로 압축된 파일이 바인딩 되어 있는 걸 확인할 수 있습니다.
 
-..code-block:: console
+.. code-block:: console
 
     $ binwalk -e pic.png
     DECIMAL     HEX         DESCRIPTION
