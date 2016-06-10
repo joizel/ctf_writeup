@@ -83,21 +83,19 @@ Source Analysis
             memset(argv[i], 0, strlen(argv[i]));
     }
 
-
 |
 
 Memory Structure
 ============================================================================================================
 
-
-스택에 다음과 같이 들어가게 됩니다.
+스택 메모리 공간에 다음과 같이 들어가게 됩니다.
 
 .. code-block:: console
 
     ================
     LOW     
     ----------------
-    Buffer  (40byte)
+    Buffer  (40byte) <- strcpy
     SFP     (4byte)
     RET     (4byte)
     argc    (4byte)
