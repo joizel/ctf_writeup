@@ -28,6 +28,7 @@ File Type
 .. code-block:: console
 
     $ file ./r100
+
     ./r100: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), 
     dynamically linked (uses shared libs), for GNU/Linux 2.6.24, 
     BuildID[sha1]=0x2448460f21e38ecca7809aef1b0bc7996881ec6a, stripped
@@ -42,9 +43,10 @@ stripped가 된 elf파일이기에 strace로 바이너리를 추적해봅니다.
 .. code-block:: console
 
     $ strace ./r100
+    
     ptrace(PTRACE_TRACEME, 0, 0, 0)         = -1 EPERM (Operation not permitted)
 
-gdb로 디버깅 할 때 루프가 발생하도록 ptrace명령을 박아두었네요.
+gdb로 디버깅 할 때 루프가 발생하도록 ptrace명령을 박아두었습니다.
 
 |
 
@@ -93,26 +95,27 @@ IDA Hexray
 
 
 
-Nice가 나와야 하기 때문에 아마도 sub_4006FD에서 False(0)이면 될 것으로 보이네요. sub_4006FD를 따라가 봅니다.
+Nice가 나와야 하기 때문에 아마도 sub_4006FD에서 False(0)이면 될 것입니다. 
+sub_4006FD 함수를 따라가 봅니다.
 
 .. code-block:: c
 
     signed __int64 __fastcall sub_4006FD(__int64 a1)
     {
-    signed int i; // [sp+14h] [bp-24h]@1
-    char v3[8]; // [sp+18h] [bp-20h]@1
-    char v4[8]; // [sp+20h] [bp-18h]@1
-    char v5[8]; // [sp+28h] [bp-10h]@1
+        signed int i; // [sp+14h] [bp-24h]@1
+        char v3[8]; // [sp+18h] [bp-20h]@1
+        char v4[8]; // [sp+20h] [bp-18h]@1
+        char v5[8]; // [sp+28h] [bp-10h]@1
 
-    *(_QWORD *)v3 = "Dufhbmf";
-    *(_QWORD *)v4 = "pG`imos";
-    *(_QWORD *)v5 = "ewUglpt";
-    for ( i = 0; i <= 11; ++i )
-    {
-        if ( *(_BYTE *)(*(_QWORD *)&v3[8 * (i % 3)] + 2 * (i / 3)) - *(_BYTE *)(i + a1) != 1 )
-            return 1LL;
-    }
-    return 0LL;
+        *(_QWORD *)v3 = "Dufhbmf";
+        *(_QWORD *)v4 = "pG`imos";
+        *(_QWORD *)v5 = "ewUglpt";
+        for ( i = 0; i <= 11; ++i )
+        {
+            if ( *(_BYTE *)(*(_QWORD *)&v3[8 * (i % 3)] + 2 * (i / 3)) - *(_BYTE *)(i + a1) != 1 )
+                return 1LL;
+        }
+        return 0LL;
     }
 
 
