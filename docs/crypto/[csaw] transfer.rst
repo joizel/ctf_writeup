@@ -94,11 +94,10 @@ decode rot13
 
     import string
 
-    def decode_morse():
+    def decode_rot13(s):
         s = s.replace("'","`")
-        rot13 = string.maketrans( 
-            '{|}~ !"#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZnopqrstuvwxyz', 
-            'nopqrstuvwxyz{|}~ !"#$%&`()*+,-./0123NOPQRSTUVWXYZABCDEFGHIJKLMabcdefghijklm')
+        rot13 = string.maketrans('{|}~ !"#$%&`()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZnopqrstuvwxyz',
+        'nopqrstuvwxyz{|}~ !"#$%&`()*+,-./0123NOPQRSTUVWXYZABCDEFGHIJKLMabcdefghijklm')
         result = string.translate(s, rot13)
         return result
 
