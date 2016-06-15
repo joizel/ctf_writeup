@@ -202,4 +202,4 @@ man_pages = [
      [u'joizel_ctfwriteup'], 1)
 ]
 
-plantuml = 'java -jar plantuml.jar'
+plantuml = 'java -jar docs/plantuml.jar'
