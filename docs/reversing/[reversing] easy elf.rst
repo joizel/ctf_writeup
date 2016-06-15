@@ -2,21 +2,11 @@
 [reversing] Easy ELF
 ============================================================================================================
 
-.. uml::
-    
-    @startuml
+.. graphviz::
 
-    start
-
-    :File Type;
-
-    :strace;
-
-    :IDA Hexray;
-    
-    stop
-
-    @enduml
+    digraph foo {
+        "bar" -> "baz";
+    }
 
 |
 
