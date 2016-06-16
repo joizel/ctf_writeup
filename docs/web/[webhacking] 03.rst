@@ -5,21 +5,29 @@
 Flow Chart
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
+.. graphviz::
 
-	start
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-	:Source analysis;
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8;
+        }
 
-	:True/False check;
-
-	:Blind SQL Injection;
-
-	stop
-
-	@enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9;
+        }
+        step0 -> step1[label="answer=1&id=1",arrowhead="normal"];
+        step3 -> step2[label="<p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr>",arrowhead="normal"];
+        step4 -> step5[label="answer=1 or 1&id=1",arrowhead="normal"];
+        step7 -> step6[label="All answer",arrowhead="normal"];
+    }
 
 |
 
@@ -159,8 +167,9 @@ Source analysis
 
 정답 입력후 gogo 버튼을 클릭하면 다음과 같은 화면이 출력된다. 
 
-.. image:: ../../_images/web-03_2.png
+.. image:: ../_images/web-03_2.png
         :align: center
+
 
 소스를 확인해 보면 다음과 같이 post 형식으로 데이터를 보내고 있다.
 
@@ -181,9 +190,8 @@ Source analysis
 
 |
 
-True/False check
+POST Parameter
 ================================================================================================================
-
 
 임의의 값을 입력하여 출력되는 메시지를 확인한다.
 
@@ -218,19 +226,23 @@ True/False check
 
     <form name=kk method=get action=index.php>
 
-    <p>name : 1<br>answer : 1<br>ip : 125.140.118.254<hr><p>name : 1<br>answer : 1<br>ip : 125.140.118.254<hr><p>name : 1<br>answer : 1<br>ip : 125.140.118.254<hr><p>name : 33<br>answer : 1<br>ip : 125.140.118.254<hr><p>name : 33<br>answer : 1<br>ip : 125.140.118.254<hr><p>name : 33<br>answer : 1||1<br>ip : 125.140.118.254<hr>
+    <p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 33<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 33<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 33<br>answer : 1||1<br>ip : 125.x.x.x<hr>
 
 |
 
-Blind SQL Injection
-================================================================================================================
-
 해당 문제에 입력 부분은 name과 answer이고, 출력 부분은 name, answer, ip이다.
-출력 결과를 보면 ip는 항상 같고, answer가 같은 값을 입력한 상태에서 name값을 다르게 입력하면 누적형식으로 쌓인 데이터를 확인할 수 있다. SQL 쿼리문으로 표현하면 다음과 같다.
+
+출력 결과를 보면 ip는 항상 같고, answer가 같은 값을 입력한 상태에서 
+name값을 다르게 입력하면 누적형식으로 쌓인 데이터를 확인할 수 있다. 
+
+SQL 쿼리문으로 표현하면 다음과 같다.
 
 .. code-block:: sql
     
     select id, answer, ip from $table_name where ip= $_SERVER[REMOTE_ADDR] and answer = $_POST[answer]
+
+|
+
 
 $_POST[answer]에 참인 값을 or 형식으로 넣어주면 모든 answer 출력 결과를 얻을 수 있다.
 

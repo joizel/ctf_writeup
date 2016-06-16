@@ -2,22 +2,6 @@
 [webhacking.kr] 04
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
-
-	start
-
-	:Source analysis;
-
-	:Base64 Decode;
-
-	:Sha1 Decrypt;
-
-	stop
-
-	@enduml
-
 |
 
 Source analysis

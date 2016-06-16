@@ -2,21 +2,29 @@
 [webhacking.kr] 06
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
+.. graphviz::
 
-	start
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-    :Source analysis;
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8;
+        }
 
-    :Cookie Base64 decode;
-
-    :solve;
-
-	stop
-
-	@enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9;
+        }
+        step0 -> step1[label="join.php",arrowhead="normal"];
+        step3 -> step2[label="javascript Obfuscated",arrowhead="normal"];
+        step4 -> step5[label="id= admin&pw=1234",arrowhead="normal"];
+        step7 -> step6[label="solve",arrowhead="normal"];
+    }
 
 |
 

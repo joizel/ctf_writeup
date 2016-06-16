@@ -2,21 +2,30 @@
 [webhacking.kr] 05
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
 
-	start
+.. graphviz::
 
-	:Source analysis;
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-	:trim 함수 우회;
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8;
+        }
 
-	:solve;
-
-	stop
-
-	@enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9;
+        }
+        step0 -> step1[label="join.php",arrowhead="normal"];
+        step3 -> step2[label="javascript Obfuscated",arrowhead="normal"];
+        step4 -> step5[label="id= admin&pw=1234",arrowhead="normal"];
+        step7 -> step6[label="solve",arrowhead="normal"];
+    }
 
 |
 
@@ -43,7 +52,6 @@ Login 버튼 클릭시 login.php로 접근하므로 join.php로 접근을 해보
 javascript로 된 페이지로 해당 난독화 부분을 복호화해보자.
 
 .. code-block:: html
-
     
     < html >
     < title > Challenge 5 < /title></head > < body bgcolor = black > < center >
@@ -109,7 +117,7 @@ javascript로 된 페이지로 해당 난독화 부분을 복호화해보자.
 trim 함수 우회
 ================================================================================================================
 
-코드를 보면 join.php로 id, pw 파라미터를 통해 가입을 하는 것을 확인할 수 있다. 해당 페이지로 admin을 가입하면 오류 메시지가 발생하는데 space를 넣어 가입할 경우 정상적으로 가입된다. 아마, trim 함수를 통해 id를 확인하는 것으로 보인다.
+코드를 복호화해보면 join.php로 id, pw 파라미터를 통해 가입을 하는 것을 확인할 수 있다. 해당 페이지로 admin을 가입하면 오류 메시지가 발생하는데 space를 넣어 가입할 경우 정상적으로 가입된다. 아마, trim 함수를 통해 id를 확인하는 것으로 보인다.
 
 .. code-block:: python
 
@@ -120,7 +128,7 @@ trim 함수 우회
         "PHPSESSID":"9johqp6c81c5hf11lkomnghhn6"
     }
     data = {
-        "id": "admin ",
+        "id":" admin ",
         "pw":"1234"
     }
 
@@ -144,7 +152,7 @@ solve
         "PHPSESSID":"9johqp6c81c5hf11lkomnghhn6"
     }
     data = {
-        "id": "admin",
+        "id":" admin",
         "pw":"1234"
     }
 
