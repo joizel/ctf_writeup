@@ -8,12 +8,12 @@ Flow Chart
 .. graphviz::
 
     digraph {
-        subgraph a {
+        subgraph cluster_0 {
             label="client";
             1->2;
         }
 
-        subgraph b {
+        subgraph cluster_1 {
             label="server";
             2->3;
         }
