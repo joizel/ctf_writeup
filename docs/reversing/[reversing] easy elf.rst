@@ -2,10 +2,20 @@
 [reversing] Easy ELF
 ============================================================================================================
 
+Flow Chart
+================================================================================================================
+
 .. graphviz::
 
     digraph foo {
-        "IDA Hex-Ray" -> "sub_80484F7()" -> "sub_8048451()==1" -> "xor 계산";
+        a -> b -> c -> d;
+        c -> e;
+        
+        a [shape=box, color=lightblue, label="IDA"];
+        b [shape=box, label="main()"];
+        c [shape=diamond, label="sub_8048451()"];
+        d [shape=box, label="correct"];
+        e [shape=box, label="wrong"];
     }
 
 |
@@ -25,7 +35,7 @@ hexray decompiler로 확인해봅니다.
         sub_8048434();
         if ( sub_8048451() == 1 )
         {
-            sub_80484F7();
+            sub_80484F7(); // correct
             result = 0;
         }
         else
