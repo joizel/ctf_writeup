@@ -8,19 +8,18 @@ Flow Chart
 .. graphviz::
 
     digraph {
-        subgraph a{
+        subgraph a {
             label="client";
             1->2;
-            1->2 [label="5<$_COOKIE[user_lv]<6"];
-        }
-        subgraph b{
-            label="server";
-            2->3;
-            2->3 [label="solve"];
         }
 
-        
-        
+        subgraph b {
+            label="server";
+            2->3;
+        }
+
+        1->2 [label="5<$_COOKIE[user_lv]<6"];
+        2->3 [label="solve"];
     }
 
 |
