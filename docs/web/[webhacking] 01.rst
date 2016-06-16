@@ -5,25 +5,21 @@
 Flow Chart
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
+.. graphviz::
 
-	start
+    digraph {
+        subgraph a{
+            label="client";
+            1->2;
+        }
+        subgraph b{
+            label="server";
+            2->3;
+        }
 
-	:Source analysis;
-
-	if (5<$_COOKIE[user_lv]<6) then (Yes)
-		:@solve();
-
-	else (No)
-		:no solve;
-
-	endif
-	
-	stop
-
-	@enduml
+        1->2 [label="5<$_COOKIE[user_lv]<6"];
+        2->3 [label="solve"];
+    }
 
 |
 

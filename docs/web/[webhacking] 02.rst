@@ -5,21 +5,25 @@
 Flow Chart
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
+.. graphviz::
 
-	start
+    digraph {
+        subgraph a{
+            label="client";
+            1->2;
+            4->5;
+        }
+        subgraph b{
+            label="server";
+            2->3;
+            3->4;
+        }
 
-	:Source analysis;
-
-	:True/False check;
-
-	:Blind SQL Injection;
-
-	stop
-
-	@enduml
+        1->2 [label="COOKIE '1 and 1=1'"];
+        2->3 [label="<!--2070-01-01 09:00:01-->"];
+        3->4 [label="COOKIE '1 and 1=2'"]
+        4->5 [label="<!--2070-01-01 09:00:00-->"];
+    }
 
 |
 
