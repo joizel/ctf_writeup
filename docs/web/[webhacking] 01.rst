@@ -7,19 +7,24 @@ Flow Chart
 
 .. graphviz::
 
-    digraph {
-        subgraph cluster_0 {
-            label="client";
-            1;
-            3;
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
+
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step1 -> step2;
         }
 
-        subgraph cluster_1 {
-            label="server";
-            2;
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step3 -> step4 -> step5;
         }
-        1->2 [label="5<$_COOKIE[user_lv]<6"];
-        2->3 [label="solve"];
+        step0 -> step3[label="5<$_COOKIE[user_lv]<6",arrowhead="normal"];
+        step4 -> step1[label="solve",arrowhead="normal"];
     }
 
 |
