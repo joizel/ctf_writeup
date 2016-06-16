@@ -10,14 +10,14 @@ Flow Chart
     digraph {
         subgraph cluster_0 {
             label="client";
-            1->2;
+            1;
+            3;
         }
 
         subgraph cluster_1 {
             label="server";
-            2->3;
+            2;
         }
-
         1->2 [label="5<$_COOKIE[user_lv]<6"];
         2->3 [label="solve"];
     }
