@@ -2,25 +2,28 @@
 [wargame] dll with notepad
 ============================================================================================================
 
-.. uml::
-    
-    @startuml
+Flow Chart
+================================================================================================================
 
-    start
+.. graphviz::
 
-    :File Type;
-
-    :strace;
-
-    :IDA Hexray;
-    
-    stop
-
-    @enduml
+    digraph foo {
+        a -> b -> c;
+        c -> d [label="0",arrowhead="normal"];
+        c -> e [label="1",arrowhead="normal"];
+        
+        a [shape=box, color=lightblue, label="IDA"];
+        b [shape=box, label="sub_4007E8()"];
+        c [shape=diamond, label="sub_4006FD()"];
+        d [shape=box, label="Nice!"];
+        e [shape=box, label="Incorrectpassword!"];
+        
+        
+    }
 
 |
 
-IDA hexray decompiler
+IDA
 ============================================================================================================
 
 notepad에 출제자가 제작한 blueh4g13.dll이 로드되는 문제입니다. 
@@ -28,6 +31,11 @@ notepad에 출제자가 제작한 blueh4g13.dll이 로드되는 문제입니다.
 문제에서 시스템 시간을 확인하라는 힌트가 주어졌습니다.
 
 로드되는 dll 파일의 소스를 hexray decompiler로 확인해봅니다.
+
+
+
+start
+------------------------------------------------------------------------------------------------------------
 
 .. code-block:: c
 
@@ -51,7 +59,14 @@ notepad에 출제자가 제작한 blueh4g13.dll이 로드되는 문제입니다.
         return 1;
     }
 
+
 time64와 localtime64_s라는 함수가 보입니다. 
+
+|
+
+sub_100010C0
+------------------------------------------------------------------------------------------------------------
+
 
 .. code-block:: c
 
@@ -138,7 +153,7 @@ time64와 localtime64_s라는 함수가 보입니다.
 
 |
 
-Immunity Debugger Breaking Point
+Immunity Debugger
 ============================================================================================================
 
 Immunity Debugger에 time64와 localtime64_s 함수를 브레이킹 포인트를 걸고 실행을 하면 다음 어셈블리 코드 부분에서 멈추게 됩니다. 
