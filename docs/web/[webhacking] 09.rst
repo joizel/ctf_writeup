@@ -2,20 +2,32 @@
 [webhacking.kr] 09
 ================================================================================================================
 
+.. graphviz::
 
-.. uml::
-	
-	@startuml
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-	start
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8 -> step10 -> step12 -> step14;
+        }
 
-    :Source analysis;
-
-    :Blind SQL Injection;
-    
-	stop
-
-	@enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9 -> step11 -> step13 -> step15;
+        }
+        step0 -> step1[label="?no=1",arrowhead="normal"];
+        step3 -> step2[label="Apple",arrowhead="normal"];
+        step4 -> step5[label="?no=2",arrowhead="normal"];
+        step7 -> step6[label="Banana",arrowhead="normal"];
+        step8 -> step9[label="?no=3",arrowhead="normal"];
+        step11 -> step10[label="Secret</b><br><br>hint : length = 11<br>column : id,no",arrowhead="normal"];
+        step12 -> step13[label="?no=IF((substr(id,%d,1)in(%s)),3,0)",arrowhead="normal"];
+    }
 
 |
 

@@ -89,8 +89,8 @@ Cookie 값 입력을 통해 True/False 여부를 확인합니다.
 
 .. code-block:: console
 
-    cookie = '1 and 1=1'  // True: <!--2070-01-01 09:00:01-->
-    cookie = '1 and 1=2'  // False: <!--2070-01-01 09:00:00-->
+    time = '1 and 1=1'  // True: <!--2070-01-01 09:00:01-->
+    time = '1 and 1=2'  // False: <!--2070-01-01 09:00:00-->
 
 |
 

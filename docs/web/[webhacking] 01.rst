@@ -24,7 +24,7 @@ Flow Chart
             "server" -> step1 -> step3 -> step5;
         }
         step0 -> step1[label="5<$_COOKIE[user_lv]<6",arrowhead="normal"];
-        step3 -> step2[label="solve",arrowhead="normal"];
+        step3 -> step2[label="@solve",arrowhead="normal"];
     }
 
 |

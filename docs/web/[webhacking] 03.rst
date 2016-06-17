@@ -26,7 +26,7 @@ Flow Chart
         step0 -> step1[label="answer=1&id=1",arrowhead="normal"];
         step3 -> step2[label="<p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr>",arrowhead="normal"];
         step4 -> step5[label="answer=1 or 1&id=1",arrowhead="normal"];
-        step7 -> step6[label="All answer",arrowhead="normal"];
+        step7 -> step6[label="@solve",arrowhead="normal"];
     }
 
 |
@@ -37,7 +37,7 @@ Source analysis
 해당 페이지는 퍼즐 형식으로 되어 있는데 퍼즐을 풀면 그때부터 문제가 시작됩니다.
 해당 퍼즐 정답은 다음과 같습니다.
 
-.. image:: ../../_images/web-03_1.png
+.. image:: ../_images/web-03_1.png
         :align: center
 
 .. code-block:: html

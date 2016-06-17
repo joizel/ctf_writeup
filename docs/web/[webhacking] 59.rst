@@ -2,20 +2,32 @@
 [webhacking.kr] 59
 ================================================================================================================
 
+Flow Chart
+================================================================================================================
 
-.. uml::
-	
-	@startuml
+.. graphviz::
 
-	start
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-	:Source analysis;
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8;
+        }
 
-	:Filtering Bypass;
-
-	stop
-
-	@enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9;
+        }
+        step0 -> step1[label="id=nimda&phone=1,reverse(id)),(1,1",arrowhead="normal"];
+        step3 -> step2[label="success",arrowhead="normal"];
+        step4 -> step5[label="id=nimda&phone=1",arrowhead="normal"];
+        step7 -> step6[label="@solve",arrowhead="normal"];
+    }
 
 |
 

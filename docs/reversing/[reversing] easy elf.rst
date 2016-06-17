@@ -16,6 +16,8 @@ Flow Chart
         c [shape=diamond, label="sub_8048451()"];
         d [shape=box, label="correct"];
         e [shape=box, label="wrong"];
+        c->d [label="1",arrowhead="normal"];
+        c->e [label="0",arrowhead="normal"];
     }
 
 |

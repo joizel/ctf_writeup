@@ -12,18 +12,16 @@
         {
             rank="same";
             "client"[shape="plaintext"];
-            "client" -> step0 -> step2 -> step4 -> step6 -> step8;
+            "client" -> step0 -> step2 -> step4;
         }
 
         {
             rank="same";
             "server"[shape="plaintext"];
-            "server" -> step1 -> step3 -> step5 -> step7 -> step9;
+            "server" -> step1 -> step3 -> step5;
         }
-        step0 -> step1[label="join.php",arrowhead="normal"];
-        step3 -> step2[label="javascript Obfuscated",arrowhead="normal"];
-        step4 -> step5[label="id= admin&pw=1234",arrowhead="normal"];
-        step7 -> step6[label="solve",arrowhead="normal"];
+        step0 -> step1[label="$_COOKIE[user],$_COOKIE[password] Base64 encode",arrowhead="normal"];
+        step3 -> step2[label="@solve",arrowhead="normal"];
     }
 
 |
@@ -126,7 +124,7 @@ Source analysis
 
 |
 
-Cookie Base64 decode
+Cookie Base64 Encode
 ================================================================================================================
 
 입력 부분이 쿠키값이기 때문에 쿠키값을 확인해보면 쿠키값이 존재함을 확인할 수 있다.

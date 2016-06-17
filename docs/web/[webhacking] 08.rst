@@ -2,19 +2,27 @@
 [webhacking.kr] 08
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
+.. graphviz::
 
-	start
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-    :Source analysis;
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4;
+        }
 
-    :User-Agent 변조;
-    
-	stop
-
-	@enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5;
+        }
+        step0 -> step1[label="User-Agent: joizel','2.2.2.2','admin');#",arrowhead="normal"];
+        step3 -> step2[label="@solve",arrowhead="normal"];
+    }
 
 |
 

