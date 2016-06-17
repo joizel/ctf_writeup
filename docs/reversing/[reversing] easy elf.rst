@@ -8,16 +8,17 @@ Flow Chart
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d;
-        c -> e;
+        a -> b -> c;
+        c -> d [label="1",arrowhead="normal"];
+        c -> e [label="0",arrowhead="normal"];
         
         a [shape=box, color=lightblue, label="IDA"];
         b [shape=box, label="main()"];
         c [shape=diamond, label="sub_8048451()"];
         d [shape=box, label="correct"];
         e [shape=box, label="wrong"];
-        c->d [label="1",arrowhead="normal"];
-        c->e [label="0",arrowhead="normal"];
+        
+        
     }
 
 |

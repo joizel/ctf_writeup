@@ -5,11 +5,11 @@
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d -> e -> f -> g -> h -> i;
+        a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l -> m -> n -> o;
         
         a [shape=box, color=lightblue, label="FCEUX"];
         b [shape=box, label="load A $0005"];
-        c [shape=diamond, label="X->A, 1bit rol (3 count)"];
+        c [shape=box, label="X->A, 1bit rol (3 count)"];
         d [shape=box, label="PUSH A"];
         e [shape=box, label="load A $003B"];
         f [shape=box, label="X->A, 1bit ror (2 count)"];
