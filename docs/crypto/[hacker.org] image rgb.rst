@@ -26,7 +26,7 @@
     for l in pixels:
         answer += hex(l)
 
-    print answer
+    print answer`
 
 |
 
