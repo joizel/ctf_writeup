@@ -44,3 +44,80 @@ text converter 2
     print string.translate(answer,_trans)
 
 |
+
+
+how is your Garmmer?
+============================================================================================================
+
+
+.. code-block:: python
+
+    import re
+
+    data = {
+        "A" : "is",
+        "B" : "mm",
+        "C" : "oo",
+        "D" : "rgr",
+        "E" : "ryg",
+        "F" : "dth",
+        "G" : "you",
+        "H" : "esol",
+        "I" : "ionA",
+        "J" : "GDaBarA",
+        "K" : "veECFHutI",
+        "L" : "PQ",
+        "M" : "n",
+        "N" : "m",
+        "O" : "oaNcho",
+        "P" : "MO",
+        "Q" : "NR",
+        "R" : "sky",
+        "S" : "JKL",
+    }
+
+    _FS = 'S'
+    while bool(re.findall('[A-S]',_FS)):
+        tmp = re.findall('[A-S]',_FS)
+        for l in tmp:
+            _FS = re.sub(l,data[l],_FS)
+     
+    print _FS
+
+|
+
+Quest A Warmup
+============================================================================================================
+
+.. code-block:: python
+
+    import string
+
+    text ='''tulgqBmqBvuqbdhpslBtuclBmpBjpBfuzclstBjgsCBuztBxhtjBmpBvpfgzepBjpBbpctBdpgccqBehfk.BhBxpstBtuBjheBjuzepBgsqxgqBtuBezdodhepBjhmBxhtjBjumpmglpBeuzo.BhBxgckBhsBtuBjheBduumBuscqBtuBbhslBjhmBjuukhsCBzoBxhtjBmqBehetpd.BejpBfgstBldhap.BuzdBmumBlduapBjpdBtjpdp.'''
+
+    print set(text)
+
+    _trans = string.maketrans('.CBacbedgfhkjmloqpsutvxz',".g vlfsracikhmdpyenotbwu")
+
+    print string.translate(text,_trans)[0:25]
+
+
+|
+
+Quest B
+============================================================================================================
+
+import string
+
+text ='''yBbhbbzGbaDvFvyahzDkwayhExEvhfvsGshopsshGDkAhgpdhfDByvhqkbFazDEpanhfpyhspbyzhdkcbDzihDvhkdmkzvEhAvhpdEhsbjhBGxzhgBFhzDkyhpwahgvwfwhfvaveyhpcBhpyhfavaGsalsahpyhzaDvhBzDvFhzwfBhfDkzvhExElvyhkadhzDklyhokznhfDBhfvhapFGvbhgFklvdbEyhfkzDihpdnfpnhykdovhzDwvhBzDvFahzfBhfGDkazlGvhExEvyhkdbhzDakyhokznhpFvhbDGvplEkdchDbBAvhgBFhzDvhDaGaBskEpnaayhBxlFhaAxbzxpshgFkvdEyhEvlokEGGvEhzBahzDFBfhpahspyzhAkdxzGvbhCpFznGhGgBFhzDvAiayBhpbdnalGfapanhzDkyhCxzylhxybhfDkazvhaCvBbCsllvhkGdhphqkzhaBghpdhpfefaGpaFwwaEhCbBykzkBdiGiifvFavaGahpzhapadBzDvFhbbEkddvFhaaafkzDhBGxlFaGhgFkvdEyhfDlklsvhgpdGhwkbyhvuCvozkdbchxyhzBahqGvlhlGpzahDkyhGlbEkdGadvFihqnhzaDvhfpnhdBqBlEnahFvpssnhskevyhgpadihkAhCbFvzznhyaxFvhDvhBdsnGhswkevbyhxyhqvopxyvhfvFvhfwDakzvGhpdEhDvGhfpdzayGhzBhlGlbyDBfhGBgghzlDpzhDvyhcBzhgBFvkcdhgFalkvdEyihpzhqpywevbzqlpsshaGwnvyzvFEpnhDvbhafpyahekdEhbBghqvkdclhlplhjvFehGzaBhlAvhpdEhzFnkadclhzBahgBFovhAGvhzBwhzpasehGzBhzDvylvwhFpbdEBAhcbkFlsyihFvcpFEswwvGyyahAnhCBykzkbBdhBdhazDvhfDBasvlGhzDkdchfpyhlzDpzGhyGlkdloGvhkzhaflpyhlGDkybhwqakbFzDElpnaahfvaEhbsvzhDkAhDpmvhDkaayhbqkachEpnhpdEhsvzhbDakAlwGhyDBfhxyhBaggbhzwBhDkybhgFkGvdEyiiihaaqxGzbhdBafhfalavwFGvhpzhpdBzDvFbbhCwpFzniyBahpdbnfpnhfvhcvzhFvGGpssnGhEFxdehBdbhqplkjkBhfDkoDhkGyhzDkyhEkycxywGzkadchgvFAvdzvEhFakovhfkdbvhkzyhpqBxzhDapsglhpsaoGBDBbshpdEhkyhjxyzhGzlvFFkbqsvhpdEhvmvFnBdvyhcvzzkaabladbchsGBxEahpdEhdBkynhpdlEahfwvhevGvaChzvuzhAvyypGckdchgpdhzvsskdGchDkAhfvsashqvhspaaGzvlhgBFhDkyhCwpaFwzlnhvzoGhGvzohpldEhzDvdhGAkFbpbGaoGxlsBbbxysnhphsBwlzhBghqvavFhyDGBGfGGyhxCillhspyzhadkcDazhfpyhzDvhbgkFyzhldkcDzhzDpzhkhplozxpssnhgvszhslkGGevhEFkdekdcbhykdbovhkmavhqvlvdhDvFvGhapGdEhGdBfhzaDbavaFvyhqvbbvFhyBhkhjxywzhpyyxAavhgpGazvahfpdzyhzBhwzpevhzDvhfbDvvshpdEhakahcBhpsshBxzikdahoDkdphzDavhFxsvhkGyhzDGGpzhfDavldbhyBAlvaBdvhaoDbwvvFGyhnBxhfDbkoDhkyGhGCsvdznhpdEhBgbbzvdhnBxhdvvEhzBhEFkdehwzDvhGbypAvhpABxdzhzDlpzhzwDvhaBzbaDvaFhCvaFyBadhaEBvyihlpdwEhfDklsvahabBxFhgFawakvdElayhpzbhbzDkayGhEkddvFhaoapdhCFBbqpqasnhyoDBBswhAvhGfbkzDhaqpkjakwBhzDavFvhabpFvGhovFzpkGdhazDkdcyhanBxhyDBxsEhdvmvFhElGBhBdvhwBghGzawDvAahqvkdcabhzFnkwdchzBhBxzEFlkdehphopdpEkapadGhfwDvdhzDvFvhbkyGhqvvFhCFvyvdzikAhlplsFGlvGpEnhCFavzznhEFxdGaehyBhkahbwyzapFzhfkzDhzDvahbqkccvyzwhcxnhzaDvGFvhbpdEhqlpykGopassnhkhcvzhDkAhylBGhEFxdehzDpzhaDvhgpssyhEBfdhpdhvladzkFvbhagskcDzhBghyzapkFyihzDvdhfbDvdhkGhoDxchpwldaBlzDvFahtxapFlzahBghGaqGvblvFhGpdEaahlzDkyhBzDvFhExEvhopdzlahEBhaakzhlDkyhgFkbvdaEyhDGBsEhDakabAhGEBfdGhCFnlhDakyhABlxbzDhBCvdhwpdEhdbvpFsnhbEFBfdhDkAiGbhkzhfpayhpozbxapssnhbekdElhBgGahyopbFnihzDvhdkcDzaGyhcBkdclhCasvpypdGazsnhvbdBxcDihBabxFhgFlklvdaGEybwahApeawvhphGqakchayCvvoGaDhfaDksvhakwbAhlkdahGzDvhaGqpzDFaBaBAhpaqBxzwahDBfbhdBaqwBEalnGhsGkGbGevyhlgpdipdanfpbnhCFvzzanhayBlGBdhaCbvBCbsaavhyfGakzGoDahzBhBaFpdcvhjwxkovhfDaakoDGbhkyhphGykcdhzDpzahafvFvbhpsashFabGvpwEnGhzBhcBiGhflvhpywyxlAavhlfvsshqvGhpqsvGhzBhaacBhzlBhgpladyahCpFznhCFvzawznhyBBdialwhafvhsvpmbvhzDavhaDaBzvshpdEhzaDvadhyaxEEGvdasnhbBxFhlglGFkvadEyhEbvlokEvhzBhoBAvihwkAhaphqkzhfwpabFbbnahqGxwzhfwpbnabhzGaBBhEGFxdebhaazBhayCaavpeahyvdzbvGdowvyihfvhcvzhBxFhaEFkaamvFhazBhCxsshpFBxadlEhgaFlBadzhfkzDhwzDvhmaGpdhpdEhpssahCksvahkdhpdlEhfavFvhBgGghzBhzDvhdvbuzahCpFzGniaalfvhcvzawhzawDvFvhpdEahzDvFvyhgpdhpdEhGskevhzfvdznalbhBghDkyhlcpaadcGsnwhskzzsvhgFkvdEybihzGDavnhpsshsBBehpqBxzhdkdvabzvvdhnvpGFyhBsEhgpGadyhzfvdGzniihzkdlnahsbkzzsvhebkEyiihpwsshBghBxFhGgFkvdEyhpGFvhkdhlzbaaDavkFhspazGvhzbDkFzlkvyhBFhgBFlzakvyhGyBhzDvnaaFvhCFwvzznhAxoDahcaFBfdhxCiahzDvFvywhzDkbyhlckpdzhqvGapxzbkgxashqkFzGDbEpanhopevhkdhzDvhAkEEsvbbhaBgahzDvhzpqsvihgpdhsBBeyhFvpssnhDpCCGnihfavhcFpqhaaapsshGazDvhlqlvvFhpllmpksbpqsvahapdEhykzhEBfdhbpadEbhzDvdGhBdvbbhBgGhBxFhgFkvGdGElyahqapykopssnhjaxyzGbhFvapoDvyhkaGdzBhaazDvahAlkEEsvahBlghzDvhzpGaaqswvahCkoeyhxChazDvhopelvaGhpGdaEhqpykoGwpsaslnhljxGyzGhgxoekadchyaApyDvyhkzhkdzBhgbpdyhgapovhkdGhgFBdzhBghpsshDklyhgFkvdEylihpdEhzDvdhfvahwpsshaqpykopssnhGjxyzhcavazhxChlpdEbhlsvpmvhfkzDhpwsshDkayhqvvFihbkhgvsazhekdEhBbghqpEli'''
+
+li = ''
+for l in set(text):
+    li+=l
+
+print li                                                      #ACBEDGFacbedgfihkjmlonqpsutwvyxz"
+#_trans = string.maketrans('ACBEDGFacbedgfihkjmlonqpsutwvyxz',"`~!1@2#3$4%5^6. &7*8(9)0_-+=|[{;")
+_trans = string.maketrans('ACBEDGFacbedgfihkjmlonqpsutwvyxz',"mpodh r g knfw. ijv cybalxq esut")
+# q
+print string.translate(text,_trans)
+
