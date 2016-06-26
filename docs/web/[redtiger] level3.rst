@@ -26,7 +26,7 @@
 
 |
 
-Source analysis
+Source Analysis
 ================================================================================================================
 
 Target: Get the password of the user Admin.
@@ -52,7 +52,7 @@ Admin
 
 |
 
-array injection
+Array Injection
 ================================================================================================================
 
 .. code-block:: python
@@ -175,7 +175,6 @@ Column Length
 
     url = "https://redtiger.labs.overthewire.org/level3.php"
     cookies = {
-        #"level2login":"easylevelsareeasy_%21",
         "level3login":"securitycat_says_meow_and_likes_cheese"
     }
 
@@ -219,7 +218,6 @@ Data Extract
 
     url = "https://redtiger.labs.overthewire.org/level3.php"
     cookies = {
-        #"level2login":"easylevelsareeasy_%21",
         "level3login":"securitycat_says_meow_and_likes_cheese"
     }
 

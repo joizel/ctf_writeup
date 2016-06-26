@@ -26,21 +26,19 @@
 
 |
 
-Source analysis
+Source Analysis
 ================================================================================================================
 
-Target: Get the login for the user Hornoxe 
-
-Hint: You really need one? omg -_- 
-
-Tablename: level1_users
+- Target: Get the login for the user Hornoxe 
+- Hint: You really need one? omg -_- 
+- Tablename: level1_users
 
 .. code-block:: html
 
     <br>Category: <a href="?cat=1">1</a>
     This category does not exist! 
     <form method="post">
-    Username: <input type="text" name="user"><br>
+    Username: <input type="text" name="user">
     Password: <input type="text" name="password">
     <input type="submit" name="login" value="Login">
     </form>
@@ -89,3 +87,4 @@ Data Extract
 
     r = requests.get(url, params=params, verify=False)
     print r.content
+
