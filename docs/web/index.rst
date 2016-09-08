@@ -8,6 +8,10 @@ WEB
     :glob:
 
     LFI/index
-    Blind SQL Injection/index
+    RFI/index
     Condition/index
+    Command Injection/index
+    Blind SQL Injection/index
+    Union Select Injection/index
+    
 
