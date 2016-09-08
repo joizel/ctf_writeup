@@ -2,6 +2,8 @@
 [redtiger] level3
 ================================================================================================================
 
+|
+
 .. graphviz::
 
     digraph G {
@@ -29,8 +31,9 @@
 Source Analysis
 ================================================================================================================
 
-Target: Get the password of the user Admin.
-Hint: Try to get an error. Tablename: level3_users
+- GET 페이지 취약점
+- GET 파라미터: usr
+- 테이블명: level3_users
 
 
 Show userdetails: 
