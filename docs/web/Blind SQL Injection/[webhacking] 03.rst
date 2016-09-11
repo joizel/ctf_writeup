@@ -22,10 +22,10 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
-        step0 -> step1[label="answer=1&id=1",arrowhead="normal"];
-        step3 -> step2[label="<p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr>",arrowhead="normal"];
-        step4 -> step5[label="answer=1 or 1&id=1",arrowhead="normal"];
-        step7 -> step6[label="@solve",arrowhead="normal"];
+        step0 -> step1[label="post_data: {answer=1&id=1}",arrowhead="normal"];
+        step3 -> step2[label="select id,answer,ip from $table_name where id=1 and answer=1",arrowhead="normal"];
+        step4 -> step5[label="post_data: {answer=1 or 1&id=1}",arrowhead="normal"];
+        step7 -> step6[label="select id,answer,ip from $table_name where id=1 and answer=1 or 1",arrowhead="normal"];
     }
 
 |
@@ -55,17 +55,7 @@ MISC
 
 .. code-block:: html
 
-    <html>
-    <head>
-    <title>Challenge 3</title>
-    </head>
-    <body>
-    <center>Puzzle</center>
-    <p>
-    <hr>
-
     <form name=kk method=get action=index.php>
-
     </form><form method=post action=index.php>
     <input type=hidden name=answer value=1010100000011100101011111>
     name : <input type=text name=id maxlength=10 size=10>
@@ -109,17 +99,33 @@ POST Parameter
 
     <form name=kk method=get action=index.php>
 
-    <p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 1<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 33<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 33<br>answer : 1<br>ip : 125.x.x.x<hr><p>name : 33<br>answer : 1||1<br>ip : 125.x.x.x<hr>
+    <p>name : 1<br>
+    answer : 1<br>
+    ip : 125.x.x.x<hr><p>
+    name : 1<br>
+    answer : 1<br>
+    ip : 125.x.x.x<hr><p>
+    name : 1<br>
+    answer : 1<br>
+    ip : 125.x.x.x<hr><p>
+    name : 33<br>
+    answer : 1<br>
+    ip : 125.x.x.x<hr><p>
+    name : 33<br>
+    answer : 1<br>
+    ip : 125.x.x.x<hr><p>
+    name : 33<br>
+    answer : 1||1<br>
+    ip : 125.x.x.x<hr>
 
 |
 
-
-
-- SQL 쿼리문으로 표현하면 다음과 같다.
+Expected SQL Query 
+================================================================================================================
 
 .. code-block:: sql
     
-    select id, answer, ip from $table_name where ip= $_SERVER[REMOTE_ADDR] and answer = $_POST[answer]
+    select id, answer, ip from $table_name where id= $_POST[id] and answer = $_POST[answer]
 
 |
 
@@ -128,6 +134,6 @@ $_POST[answer]에 참인 값을 or 형식으로 넣어주면 모든 answer 출�
 
 .. code-block:: sql
     
-    select id, answer, ip from $table_name where ip= $_SERVER[REMOTE_ADDR] and answer = 1 or 1
+    select id, answer, ip from $table_name where id= $_POST[id] and answer = 1 or 1
 
 

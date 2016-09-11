@@ -36,7 +36,7 @@ Source analysis
 
 최초 접속 시 다음과 같은 인증 페이지가 뜬다.
 
-.. image:: ../_images/web-09_1.png
+.. image:: ../../_images/web-09_1.png
     :align: center
 
 해당 인증 페이지시 다른 메소드로 접속해본다.

