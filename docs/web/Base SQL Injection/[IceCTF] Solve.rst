@@ -31,34 +31,20 @@
 소스 분석
 ================================================================================================================
 
+- PHP 
 - POST 파라미터: username, password
-- String
-- information_schema.processlist
 
-.. code-block:: php
+.. code-block:: sql
 
-    <?php
-    include "config.php";
-    $con = mysqli_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASS, $MYSQL_DB);
-    $username = $_POST["username"];
-    $password = $_POST["password"];
-    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-    $result = mysqli_query($con, $query);
-
-    if (mysqli_num_rows($result) !== 1) {
-      echo "<h1>Login failed.</h1>";
-    } else {
-      echo "<h1>Logged in!</h1>";
-      echo "<p>Your flag is: $FLAG</p>";
-    }
-
-    ?>
+    SELECT * FROM users WHERE username='$_POST["username"]' AND password='$_POST["password"]'
 
 |
 
 login success
 ================================================================================================================
 
+- union select
+- information_schema.processlist
 
 .. code-block:: python
 
