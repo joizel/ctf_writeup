@@ -1,6 +1,6 @@
 php 소스코드 문제는 아래와 같다.
 
-..code-block:: php
+.. code-block:: php
 
     <?php
         error_reporting(0);
