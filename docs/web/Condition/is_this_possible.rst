@@ -1,0 +1,45 @@
+php 소스코드 문제는 아래와 같다.
+
+..code-block:: php
+
+    <?php
+        error_reporting(0);
+        require_once 'config.php';
+        if(isset($_GET['go'])){
+            $filter = "/\'|\"|`|,|<|>|&|=|;|#|or|and|union|select|into|info|sc|in|like|regex|rand|limit|prob|0x|0b/i";
+            if(preg_match($filter, $_GET['go']))
+                exit("403 forbidden");
+            if(preg_match("/\s/", $_GET['go']))
+                exit("whitespace nono");
+            $i = 0;
+            $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+            $query = mysqli_query($conn, "SELECT * FROM `go` ORDER BY ".$_GET['go']." DESC");
+            echo "<table style='border: 1px solid black;'>";
+            echo "<tr><th>id</th></tr>";
+            while($row = mysqli_fetch_array($query)){
+                $res[$i++] = $row['id'];
+                echo "<tr><td>{$row['id']}</td></tr>";
+            }
+            echo "</table><hr>";
+            if($res[0] === "admin" && $res[1] === "19990301" && $res[2] === "guest"){
+                if((int)$res[1] == $_GET['foo'] && strlen($_GET['foo']) > 10){
+                    solve();
+                }
+            }
+        }
+        highlight_file(__FILE__); 
+    ?>
+
+문제를 볼 때 항상 입력값과 출력값을 염두해두자.
+입력값은 go파라미터와 foo파라미터이고, 출력값은 solve()이다.
+
+출력값인 solve()까지 가기 위해서는 입력한 값에 대한 조건문이 5개 맞아야 한다.
+
+1) go 파라미터 입력값을 통한 출력값 첫번째 줄이 admin이어야 하고,
+2) 출력값 두번째 줄이 19990301이어야 하고,
+3) 출력값 세번째 줄이 guest여야 한다.
+4) go 파라미터를 통한 출력값 두번째 줄을 int 적용할 경우, foo 파라미터 입력 값과 같아야 하며,
+5) foo 파라미터의 스트링 길이는 10이상이어야 한다.
+
+일단 go 파라미터에 1 값을 입력하고 어떻게 출력되는 지 확인한다.
+
