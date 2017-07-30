@@ -63,9 +63,8 @@ sort by절에 go 파라미터가 끼어 있으므로, case 컬럼명 when 조건
 
    case(hex(id)%2b0)when(61646)then(1)else(case(id)when(19990301)then(1)end)end
 
-위에서 언급한 3가지 조건이 만족하였으며, foo 파라미터에 대한 2가지 조건을 만족해야하는데 문자열 길이가 10 int로 
-   case(hex(id)%2b0)when(61646)then(1)else(case(id)when(19990301)then(1)end)end변환하였을 
-   case(hex(id)%2b0)when(61646)then(1)else(case(id)when(19990301)then(1)end)end경우 19990301fh qusghksdl akswhrgkrl dnlgotjsms 소수점을 이용할 수 있다.
+위에서 언급한 3가지 조건이 만족하였으며, foo 파라미터에 대한 2가지 조건을 만족해야한다.
+문자열 길이가 10이고, int로 변환하였을 경우 19990301로 변환할 수 있는 방법은 소수점을 이용할 수 있다.
 
 .. code-block:: sql
 
