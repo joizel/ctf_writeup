@@ -45,3 +45,30 @@ php 소스코드 문제는 아래와 같다.
 
 .. image:: 1.png
     :align: center
+
+다음과 같이 테이블이 출력된다. 해당 테이블을 위의 조건과 만족하도록 출력하여야 하는데, 많은 문자열을 preg_match로 필터링하고 있다.
+admin, 19990301, guest 순으로 출력을 하기 위해서는 문자열 길이로 sorting해도 안되고, 문자정렬 순위로 sorting해도 불가능하다.
+해당 문자열을 int값으로 출력하여 그 값을 비교하여 하나씩 sorting 하도록 하자.
+sort by절에 go 파라미터가 끼어 있으므로, case 컬럼명 when 조건문 then 저장구간 else구문을 이용하여 하나씩  조건을 성립해나가도록 한다.
+
+먼저 admin을 첫번째 줄에 출력하도록 한다. in이 문자열로 필터링되기 때문에 int값으로 비교하여 출력하도록 한다.
+
+.. code-block:: sql
+
+   case(hex(id)%2b0)when(61646)then(1)else(2)end
+
+두번째 줄의 경우 19990301이 출력되도록 한다.
+
+.. code-block:: sql
+
+   case(hex(id)%2b0)when(61646)then(1)else(case(id)when(19990301)then(1)end)end
+
+위에서 언급한 3가지 조건이 만족하였으며, foo 파라미터에 대한 2가지 조건을 만족해야하는데 문자열 길이가 10 int로 
+   case(hex(id)%2b0)when(61646)then(1)else(case(id)when(19990301)then(1)end)end변환하였을 
+   case(hex(id)%2b0)when(61646)then(1)else(case(id)when(19990301)then(1)end)end경우 19990301fh qusghksdl akswhrgkrl dnlgotjsms 소수점을 이용할 수 있다.
+
+.. code-block:: sql
+
+    19990301.00
+    
+모든 조건을 만족시켜 플래그를 획득할 수 있다.
