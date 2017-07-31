@@ -11,5 +11,4 @@ joizel's writeup
     pwnable/index
     forensic/index
     crypto/index
-    binary/index
     misc/index
