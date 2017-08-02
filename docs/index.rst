@@ -12,3 +12,4 @@ joizel's writeup
     forensic/index
     crypto/index
     misc/index
+    wargame/index
