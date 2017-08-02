@@ -21,7 +21,7 @@ http://13.124.1.51/h3x0rctf/chall1/
     dmlldyAvaDN4MHJjdGYvY2hhbGwxL2Nzcy9mbGFnLmNzcw==-->
 
 
-base64 decode 하면 다음과 같은 내용이 출력되고, 해당 페이지에 접속하면 플래그를 획득할 수 있다.ㅁㅁ
+base64 decode 하면 다음과 같은 내용이 출력되고, 해당 페이지에 접속하면 플래그를 획득할 수 있다.
 
 .. code-block:: console
 
