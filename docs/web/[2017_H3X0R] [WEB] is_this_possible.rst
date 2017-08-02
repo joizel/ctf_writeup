@@ -52,7 +52,7 @@ php 소스코드 문제는 아래와 같다.
 
 일단 go 파라미터에 1 값을 입력하고 어떻게 출력되는 지 확인한다.
 
-.. image:: ../../_images/20170730-1.png
+.. image:: ../_images/20170730-1.png
     :align: center
 
 
