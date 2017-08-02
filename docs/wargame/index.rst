@@ -5,7 +5,6 @@ Wargame
 
 .. toctree::
     :maxdepth: 1
-    :glob:
 
-    *
+    web\index
 
