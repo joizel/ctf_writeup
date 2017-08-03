@@ -7,4 +7,4 @@ Wargame
     :maxdepth: 1
 
     web/index
-
+    forensic/index
