@@ -8,7 +8,7 @@
 We are trying to study the Black Holes. One of the most controversial theory related to Black Holes is the "Information Loss Paradox". Calculations suggest that physical information could permanently disappear in a black hole. But this violates the quantum theory. To test the hypothesis, we sent our flag encoded in Base64 format towards a Black Hole. With the help of our Hubble Space Telescope, we got some pictures of the Black Hole. See if you can recover the flag from this information.
 [번역] 우리는 블랙홀에 대해 연구하려고 합니다. 블랙홀과 관려뇐 가장 논란이 되는 이론 중 하나가 "Information Loss Paradox" 입니다. 계산에 따르면, 물리적 정보가 블랙홀에서는 영구적으로 사라질 수 있습니다. 그러나, 이건은 양자 이론에 위배됩니다. 가설을 테스트하기 위해 우리는 Base64 형식으로 인코딩된 플래그를 블랙홀로 보냈습니다.  Hubble Space Telescope의 도움으로 블랙홀 사진을 얻었습니다. 이 정보에서 플래그를 복구할 수 있는지 확인하십시오.
 
-.. image:: ../_images/0803-3.jpg
+.. images:: ../_images/0803-3.jpg
     :align: center
 
 
