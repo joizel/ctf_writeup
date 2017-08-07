@@ -10,7 +10,7 @@ Can you please help me recover those images?
 문제 풀이
 ==============================================================
 
-파일을 받아 압축을 해제해보니 이미지 파일으로 보입니다.
+파일을 받아 압축을 해제해보니 이미지 파일으로 보인다.
 
 .. code-block:: console
 
@@ -100,13 +100,13 @@ Can you please help me recover those images?
     drwxr-xr-x 12 1001 1001 1024 Jun 20 09:55 ..
 
 
-이미지 파일을 확인해보니 wannaflty라는 랜섬웨어에 감염된 것으로 보입니다.
+이미지 파일을 확인해보니 wannaflty라는 랜섬웨어에 감염.
 
 .. image:: ../_images/0807-1.png
     :align: center
 
 
-위에서 의심스러웠던 ...파일을 먼저 확인해보면 암호화를 진행한 코드를 확인할 수 있습니다.
+위에서 의심스러웠던 ...파일을 먼저 확인해보면 암호화를 진행한 코드를 확인할 수 있다.
 
 .. code-block:: python
 
