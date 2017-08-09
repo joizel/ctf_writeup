@@ -8,3 +8,7 @@ Wargame
 
     web/index
     forensic/index
+    reversing/index
+    pwnable/index
+    crypto/index
+    misc/index
