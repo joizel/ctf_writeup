@@ -56,7 +56,7 @@ strace를 통해 해당 바이너리 파일을 확인해보자.
 
 objdump는 GNU 바이너리 유틸리티의 일부로서, 라이브러리, 컴파일된 오브젝트 모듈, 공유 오브젝트 파일, 독립 실행파일등의 바이너리 파일들의 정보를 보여주는 프로그램이다. objdump는 ELF 파일을 어셈블리어로 보여주는 역어셈블러로 사용될 수 있다.
 
-.. code-block:: console
+.. code-block:: bash
 
     $ objdump -d ./leon | grep \<ptrace@plt\>
     0000000000400660 <ptrace@plt>:
@@ -64,7 +64,7 @@ objdump는 GNU 바이너리 유틸리티의 일부로서, 라이브러리, 컴�
 
 ptrace 주소를 확인하였으니, 해당 주소 이전에 브레이크를 걸어보자.
 
-.. code-block:: console
+.. code-block:: bash
 
     gdb-peda$ b *0x40081d
     Breakpoint 1 at 0x40081d
