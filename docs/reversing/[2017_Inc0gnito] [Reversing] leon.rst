@@ -19,7 +19,7 @@ strace는 애플리케이션들이 사용하는 system call과 signal 등을 추
 
 strace를 통해 해당 바이너리 파일을 확인해보자.
 
-.. code-block:: console
+.. code-block:: bash
 
     $ strace ./leon
     execve("./leon", ["./leon"], [/* 36 vars */]) = 0
