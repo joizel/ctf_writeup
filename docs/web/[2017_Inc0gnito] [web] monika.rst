@@ -167,3 +167,17 @@ Source code available at: Here
         app.run(host='0.0.0.0', port=9094)
 
 
+로그인 후 쿠키에 저장되어 있는 세션값을 가져와 base64 디코드와 zlib decompress를 해주게 되면 플래그를 획득 할 수 있습니다.
+
+
+.. code-block:: python
+
+    import ast
+    import base64
+    import zlib
+
+    cookie = ".eJxljssKwjAQRX9FZu3CjkaI4MJXW0UF8dE0u6SptJpEkVRQ8d-tCq3gauDMuXPnASJJToV10HuAPx8E79mQ0IP1lowXobtL9LQKtONsuVdIbwJ1wT16itnsyFDfGZKr8qlLdzQvnRbDneGG3lTY6sOzCbkqjwllcgtNsHlytMKkVQs8S8V5P62r7nTQ_yQdVngTUCuizhe3a2z0QSDJZLStU51qvcIsk0ZpPhoWIlpepPEdX0--GvnTpgE5x-iKOPJ0-dcLUuJUbw.DIEUTA.HCEaHOZhyRP0ntFZg09diruyjHM==="
+    data1 = base64.urlsafe_b64decode(cookie)
+    data2 = zlib.decompress(data1)
+    data2 = ast.literal_eval(data2)
+    print base64.b64decode(data2["account"]["FLAG"][" b"])
