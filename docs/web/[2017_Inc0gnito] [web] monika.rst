@@ -13,7 +13,7 @@ Source code available at: Here
 문제 풀이
 ==============================================================
 
-소스코드를확인해보ㅕ
+소스코드를 확인해보면 flask의 session에 플래그가 저장되어 암호화되는 것을 확인 할 수 있다.
 
 .. code-block:: python
 
@@ -165,3 +165,5 @@ Source code available at: Here
 
     if __name__ == "__main__":
         app.run(host='0.0.0.0', port=9094)
+
+
