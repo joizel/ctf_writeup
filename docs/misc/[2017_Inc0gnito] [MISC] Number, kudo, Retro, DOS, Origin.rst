@@ -1,5 +1,5 @@
 ==============================================================
-[2017_Inc0gnito] [misc] Number, kudo, Retro, DOS, Origin
+[2017_Inc0gnito] [MISC] Number, kudo, Retro, DOS, Origin
 ==============================================================
 
 문제내용 (Number)
