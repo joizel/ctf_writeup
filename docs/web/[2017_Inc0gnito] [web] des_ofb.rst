@@ -16,7 +16,7 @@ Here is my favorite secret file encrypted by it.
 OFB 운영모드의 DES 인코딩 python 코드와 암호화된 파일이 주어진다.
 암호화 파일을 복호화해서 플래그를 찾는게 문제 핵심으로 보인다.
 
-..code-block:: python
+.. code-block:: python
 
     #!/usr/bin/env python
 
