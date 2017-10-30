@@ -6,13 +6,13 @@
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d;
+        a -> b -> c -> d -> e;
 
-        a [shape=box, color=lightblue, label="strcpy"];
-        b [shape=box, label="argv[1]"];
-        b [shape=box, label="Buffer Overflow"];
-        c [shape=box, label="getenv address"];
+        a [shape=box, label="argv[1]"];
+        b [shape=box, color=lightblue, label="strcpy"];
+        c [shape=box, label="Buffer Overflow"];
         d [shape=box, label="RET"];
+        e [shape=box, label="getenv address"];
     }
 
 

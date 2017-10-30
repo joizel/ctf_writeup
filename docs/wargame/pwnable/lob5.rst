@@ -1,43 +1,30 @@
 ============================================================================================================
-[lob] orc
+[redhat-lob] wolfman
 ============================================================================================================
 
 
-.. uml::
-    
-    @startuml
 
-    start
+.. graphviz::
 
-    :Source Analysis;
+    digraph foo {
+        a -> b -> c -> d -> e;
 
-    :Memory Structure;
-
-    :Segmentation fault;
-
-    :argv[1] 주소 확인;
-
-    :RET 주소를 argv[1] 주소로 변경하여 공격 진행;
-    
-    stop
-
-    @enduml
+        a [shape=box, label="argv[1]"];
+        b [shape=box, color=lightblue, label="strcpy"];
+        c [shape=box, label="Buffer Overflow"];
+        d [shape=box, label="RET"];
+        e [shape=box, label="argv[1] address"];
+    }
 
 
 |
 
-Source Analysis
+Source Code
 ============================================================================================================
 
-해당 문제 소스코드는 다음과 같습니다.
+lob 문제의 경우 소스코드가 공개되어 있으며, 소스코드는 다음과 같다.
 
 .. code-block:: c
-
-    /*
-        The Lord of the BOF : The Fellowship of the BOF
-        - wolfman
-        - egghunter + buffer hunter
-    */
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -72,19 +59,20 @@ Source Analysis
 
 |
 
-Memory Structure
+Vulnerabliity Vector
 ============================================================================================================
 
-스택 메모리 공간에 다음과 같이 들어가게 됩니다.
+스택 메모리 공간에 다음과 같이 들어가게 된다.
+사이즈가 40바이트인 char 형 변수 배열 buffer가 선언되어 있는데, argv[1][47]=="\\bf" 조건을 만족하면 오버플로우가 발생한다.
 
 .. code-block:: console
 
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- strcpy
+    Buffer  (40byte) 
     SFP     (4byte)
-    RET     (4byte)
+    RET     (4byte) <- strcpy overflow
     argc    (4byte)
     argv    (4byte)
     ----------------
@@ -93,12 +81,12 @@ Memory Structure
 
 |
 
-Segmentation fault
+Buffer Overflow
 ============================================================================================================
 
-strcpy로 인해 입력한 값이 버퍼보다 클 경우 오버플로우가 발생됩니다.
+strcpy에서 argv[1] 인자 값을 통해 buffer 변수에 입력될 때, argv[1][47]=="\\bf" 조건을 만족하고 값이 버퍼보다 클 경우 오버플로우가 발생된다.
 
-※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행해야 합니다.
+※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행.
 
 .. code-block:: console
 
@@ -117,10 +105,12 @@ strcpy로 인해 입력한 값이 버퍼보다 클 경우 오버플로우가 발
 exploit
 ============================================================================================================
 
-argv[1] 주소 확인
+기존 문제들의 경우 환경 변수에 쉘코드를 삽입하여 해당 영역으로 RET를 할 수 있었으나, 해당 문제는 environ을 초기화하여 환경 변수 사용이 불가능하다.
+
+argv[1]이 저장되는 주소 확인
 ------------------------------------------------------------------------------------------------------------
 
-앞의 조건에 argv[1][47]값이 \\xbf인지 확인하기 때문에, gdb를 이용하여 argv[1]이 가리키는 주소를 찾습니다.
+앞의 조건에 argv[1][47]값이 "\\xbf"인지 확인하기 때문에, gdb를 이용하여 argv[1]이 저장되는 주소(buffer)를 찾는다.
 
 .. code-block:: console
 
@@ -195,7 +185,7 @@ RET 주소를 argv[1] 주소로 변경하여 공격 진행
 
 |
 
-오버플로우시 RET 주소를 argv[1]의 주소로 변경하여 해당 쉘코드가 실행되도록 합니다. argv[1]의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있습니다.
+오버플로우시 RET 주소를 argv[1] 주소로 변경하여 해당 쉘코드가 실행되도록 한다. buffer의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
 
 nop (19 byte) + shellcode (25 byte) + argv[1] address
 

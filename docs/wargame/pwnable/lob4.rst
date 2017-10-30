@@ -12,7 +12,7 @@
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
         d [shape=box, label="RET"];
-        e [shape=box, label="buffer address"];
+        e [shape=box, label="argv[1] address"];
     }
 
 
@@ -61,7 +61,7 @@ Vulnerabliity Vector
 ============================================================================================================
 
 스택 메모리 공간에 다음과 같이 들어가게 된다.
-사이즈가 40바이트인 char 형 변수 배열 buffer가 선언되어 있는데, argv[1][47]=="\\bf" 조건을 만족하고 해당 사이즈보다 큰 값을 입력할 경우 오버플로우가 발생한다.
+사이즈가 40바이트인 char 형 변수 배열 buffer가 선언되어 있는데, argv[1][47]=="\\bf" 조건을 만족하면 오버플로우가 발생한다.
 
 
 .. code-block:: console
@@ -167,7 +167,7 @@ argv[1]이 저장되는 주소 확인
 
 
 
-RET 주소를 buffer 주소로 변경하여 공격 진행
+RET 주소를 argv[1] 주소로 변경하여 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
@@ -177,7 +177,7 @@ RET 주소를 buffer 주소로 변경하여 공격 진행
     ----------------
     Buffer  (40byte) <- "\x90"*19 + shellcode (21)
     SFP     (4byte)  <- shellcode (4)
-    RET     (4byte)  <- buffer address
+    RET     (4byte)  <- argv[1] address
     argc    (4byte)
     argv    (4byte)
     ----------------
@@ -186,9 +186,9 @@ RET 주소를 buffer 주소로 변경하여 공격 진행
 
 |
 
-오버플로우시 RET 주소를 buffer 주소로 변경하여 해당 쉘코드가 실행되도록 한다. buffer의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
+오버플로우시 RET 주소를 argv[1] 주소로 변경하여 해당 쉘코드가 실행되도록 한다. buffer의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
 
-nop (19 byte) + shellcode (25 byte) + buffer address
+nop (19 byte) + shellcode (25 byte) + argv[1] address
 
 .. code-block:: console
 
