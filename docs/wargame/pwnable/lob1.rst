@@ -110,13 +110,13 @@ exploit
 .. code-block:: c
 
     #include <stdio.h>
-int main(int argc, char **argv)
-{
-    char *addr;
-    addr = getenv(argv[1]);
-    printf("address %p\n", addr);
-    return 0;
-}
+    int main(int argc, char **argv)
+    {
+        char *addr;
+        addr = getenv(argv[1]);
+        printf("address %p\n", addr);
+        return 0;
+    }
 
 .. code-block:: console
 
