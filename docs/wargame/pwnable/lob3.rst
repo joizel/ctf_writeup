@@ -2,16 +2,17 @@
 [redhat-lob] goblin
 ============================================================================================================
 
+
 .. graphviz::
 
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, color=lightblue, label="gets overflow"];
-        b [shape=box, label="Buffer Overflow"];
-        c [shape=box, label="환경 변수 상에 쉘코드 등록"];
-        d [shape=box, label="환경 변수 주소값 확인"];
-        e [shape=box, label="RET 주소를 환경 변수 주소로 덮어씌워 공격 진행"];
+        a [shape=box, label="input"];
+        b [shape=box, color=lightblue, label="gets"];
+        c [shape=box, label="Buffer Overflow"];
+        d [shape=box, label="RET"];
+        e [shape=box, label="getenv address"];
     }
 
 

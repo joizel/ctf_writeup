@@ -6,13 +6,13 @@
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d -> e;
+        a -> b -> c -> d;
 
-        a [shape=box, color=lightblue, label="strcpy overflow"];
+        a [shape=box, color=lightblue, label="strcpy"];
+        b [shape=box, label="argv[1]"];
         b [shape=box, label="Buffer Overflow"];
-        c [shape=box, label="환경 변수 상에 쉘코드 등록"];
-        d [shape=box, label="환경 변수 주소값 확인"];
-        e [shape=box, label="RET 주소를 환경 변수 주소로 덮어씌워 공격 진행"];
+        c [shape=box, label="getenv address"];
+        d [shape=box, label="RET"];
     }
 
 

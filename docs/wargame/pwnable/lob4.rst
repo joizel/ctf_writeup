@@ -8,13 +8,12 @@
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, color=lightblue, label="strcpy overflow"];
-        b [shape=box, label="Buffer Overflow"];
-        c [shape=box, label="환경 변수 상에 쉘코드 등록"];
-        d [shape=box, label="환경 변수 주소값 확인"];
-        e [shape=box, label="RET 주소를 환경 변수 주소로 덮어씌워 공격 진행"];
+        a [shape=box, label="argv[1]"];
+        b [shape=box, color=lightblue, label="strcpy"];
+        c [shape=box, label="Buffer Overflow"];
+        d [shape=box, label="RET"];
+        e [shape=box, label="buffer address"];
     }
-
 
 
 |
