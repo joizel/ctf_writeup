@@ -8,11 +8,11 @@
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="input"];
+        a [shape=box, label="dummy * 20 + envp address"];
         b [shape=box, color=lightblue, label="gets"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="getenv address"];
+        d [shape=box, label="envp address"];
+        e [shape=box, label="dummy * 100 + shellcode"];
     }
 
 
@@ -45,13 +45,13 @@ Vulnerabliity Vector
     ---------------
     Buffer  (16byte)
     SFP     (4byte) 
-    RET     (4byte)  <- gets overflow
-    argc    (4byte)  <- 0x00000001
-    argv[0] (4byte)  <- argv[0] 주소
+    RET     (4byte)   
+    argc    (4byte)   
+    argv    (4byte)   
+    envp    (4byte)   <
     ---------------
     HIGH    
     ===============
-
 |
 
 Buffer Overflow
@@ -78,7 +78,7 @@ Buffer Overflow
 exploit
 ============================================================================================================
 
-환경 변수 쉘코드 등록
+환경 변수 상에 쉘코드 등록
 ------------------------------------------------------------------------------------------------------------
 
 환경 변수에 쉘코드를 등록해두고, 입력값 마지막 리턴 주소를 환경 변수 주소로 변경하여 해당 쉘코드를 실행하도록 한다.
@@ -118,7 +118,7 @@ exploit
 
 |
 
-RET 주소를 환경 변수 주소로 변경하여 공격 진행
+RET를 환경 변수 주소로 덮어씌워 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
@@ -126,11 +126,10 @@ RET 주소를 환경 변수 주소로 변경하여 공격 진행
     ===============
     LOW     
     ---------------
-    Buffer  (16byte) <- "\x90"*16
-    SFP     (4byte)  <- "\x90"*4
-    RET     (4byte)  <- shellcode 환경 변수 주소
-    argc    (4byte)  <- 0x00000001
-    argv[0] (4byte)  <- argv[0] 주소
+    Buffer  (16byte)  <- dummy
+    SFP     (4byte)   <- dummy
+    RET     (4byte)   <- envp address
+    envp    (4byte)   <- nopsled shellcode
     ---------------
     HIGH    
     ===============
@@ -138,6 +137,7 @@ RET 주소를 환경 변수 주소로 변경하여 공격 진행
 |
 
 오버플로우시 RET 주소를 환경 변수 주소로 변경하여 해당 쉘코드가 실행되도록 한다. 
+
 gets의 경우 프로그램 실행 이후 값이 입력되어야 하기 때문에 다음 형식으로 변수를 입력합니다.
 
 .. code-block:: console

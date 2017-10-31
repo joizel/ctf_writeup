@@ -8,11 +8,11 @@
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="argv[1]"];
+        a [shape=box, label="dummy * 20 + envp address"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="getenv address"];
+        d [shape=box, label="envp address"];
+        e [shape=box, label="dummy * 100 + shellcode"];
     }
 
 
@@ -46,12 +46,12 @@ Vulnerabliity Vector
     ===============
     LOW     
     ---------------
-    Buffer  (16byte)
+    Buffer  (256byte)
     SFP     (4byte) 
-    RET     (4byte)  <- strcpy overflow
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+    RET     (4byte)   
+    argc    (4byte)   
+    argv    (4byte)   
+    envp    (4byte)   <
     ---------------
     HIGH    
     ===============
@@ -81,7 +81,7 @@ Buffer Overflow
 exploit
 ============================================================================================================
 
-환경 변수 쉘코드 등록
+환경 변수 상에 쉘코드 등록
 ------------------------------------------------------------------------------------------------------------
 
 환경 변수에 쉘코드를 등록해두고, 입력값 마지막 리턴 주소를 환경 변수 주소로 변경하여 해당 쉘코드를 실행하도록 한다.
@@ -121,7 +121,7 @@ exploit
 
 |
 
-RET 주소를 환경 변수 주소로 변경하여 공격 진행
+RET를 환경 변수 주소로 덮어씌워 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
@@ -129,19 +129,17 @@ RET 주소를 환경 변수 주소로 변경하여 공격 진행
     ===============
     LOW     
     ---------------
-    Buffer  (16byte) <- "\x90"*16
-    SFP     (4byte)  <- "\x90"*4
-    RET     (4byte)  <- shellcode 환경 변수 주소
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+    Buffer  (16byte)  <- dummy
+    SFP     (4byte)   <- dummy
+    RET     (4byte)   <- envp address
+    envp    (4byte)   <- nopsled shellcode
     ---------------
     HIGH    
     ===============
 
 |
 
-오버플로우시 RET 주소를 환경 변수 주소로 변경하여 해당 쉘코드가 실행되도록 한다.
+오버플로우시 RET 주소를 환경 변수 주소로 덮어씌워 해당 쉘코드가 실행되도록 한다.
 
 .. code-block:: console
 

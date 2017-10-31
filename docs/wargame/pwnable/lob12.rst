@@ -1,6 +1,20 @@
 ============================================================================================================
-[lob] darkknight
+[redhat-lob] (12) darknight
 ============================================================================================================
+
+.. graphviz::
+
+    digraph foo {
+        a -> b -> c -> d -> e;
+
+        a [shape=box, label="argv[1] value"];
+        b [shape=box, color=lightblue, label="strcpy"];
+        c [shape=box, label="Buffer Overflow"];
+        d [shape=box, label="RET"];
+        e [shape=box, label="program name address"];
+    }
+
+|
 
 source code
 ============================================================================================================
@@ -8,12 +22,6 @@ source code
 해당 문제 소스코드는 다음과 같습니다.
 
 .. code-block:: c
-
-    /*
-        The Lord of the BOF : The Fellowship of the BOF
-        - darkknight
-        - FPO
-    */
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -33,6 +41,7 @@ source code
         }
         problem_child(argv[1]);
     }
+
 
 
 Buffer Overflow

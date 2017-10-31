@@ -8,7 +8,7 @@
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="argv[1]"];
+        a [shape=box, label="argv[1] value"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
         d [shape=box, label="RET"];
@@ -205,8 +205,8 @@ RET 주소를 argv[1] 주소로 변경하여 공격 진행
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- "\x90"*19 + shellcode
-    SFP     (4byte)  <- shellcode
+    Buffer  (40byte) <- "\x90"*19 + shellcode(21)
+    SFP     (4byte)  <- shellcode(4)
     RET     (4byte)  <- argv[1] address
     argc    (4byte)  <- 0x00000002
     argv[0] (4byte)  <- argv[0] 주소

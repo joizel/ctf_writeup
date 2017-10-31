@@ -8,11 +8,11 @@
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="argv[1]"];
+        a [shape=box, label="dummy * 260 + envp address"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="getenv address"];
+        d [shape=box, label="envp address"];
+        e [shape=box, label="dummy * 100 + shellcode"];
     }
 
 
@@ -49,10 +49,10 @@ Vulnerabliity Vector
     ---------------
     Buffer  (256byte)
     SFP     (4byte) 
-    RET     (4byte)  <- strcpy overflow
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+    RET     (4byte)   
+    argc    (4byte)   
+    argv    (4byte)   
+    envp    (4byte)   <
     ---------------
     HIGH    
     ===============
@@ -102,7 +102,7 @@ exploit
 
 |
 
-환경 변수 주소값 확인
+환경 변수 주소 값 확인
 ------------------------------------------------------------------------------------------------------------
 
 다음과 같이 소스코드를 작성하여 shellcode 환경 변수에 대한 주소 값을 획득.
@@ -132,7 +132,7 @@ exploit
 
 |
 
-RET 주소를 환경 변수 주소로 덮어씌워 공격 진행
+RET를 환경 변수 주소로 덮어씌워 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 
@@ -141,19 +141,17 @@ RET 주소를 환경 변수 주소로 덮어씌워 공격 진행
     ===============
     LOW     
     ---------------
-    Buffer  (256byte) <- "\x90"*256
-    SFP     (4byte)   <- "\x90"*4
-    RET     (4byte)   <- shellcode 환경 변수 주소
-    argc    (4byte)   <- 0x00000002
-    argv[0] (4byte)   <- argv[0] 주소
-    argv[1] (4byte)   <- argv[1] 주소
+    Buffer  (256byte) <- dummy
+    SFP     (4byte)   <- dummy
+    RET     (4byte)   <- envp address
+    envp    (4byte)   <- nopsled shellcode
     ---------------
     HIGH    
     ===============
 
 |
 
-오버플로우시 RET 주소를 환경 변수 주소로 변경하여 해당 쉘코드가 실행되도록 한다.
+오버플로우시 RET 주소를 환경 변수 주소로 덮어씌워 해당 쉘코드가 실행되도록 한다.
 
 .. code-block:: console
 

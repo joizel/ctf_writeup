@@ -9,11 +9,11 @@
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="argv[1]"];
+        a [shape=box, label="dummy * 19 + shellcode + argv[1] address"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="argv[1] address"];
+        d [shape=box, label="argv[1] address"];
+        e [shape=box, label="dummy * 19 + shellcode"];
     }
 
 
@@ -69,10 +69,9 @@ Vulnerabliity Vector
     ----------------
     Buffer  (40byte) 
     SFP     (4byte)
-    RET     (4byte)  <- strcpy overflow
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+    RET     (4byte)
+    argc    (4byte)
+    argv    (4byte)  <
     ----------------
     HIGH    
     ================
@@ -173,12 +172,10 @@ RET 주소를 argv[1] 주소로 변경하여 공격 진행
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- "\x90"*19 + shellcode
-    SFP     (4byte)  <- shellcode
-    RET     (4byte)  <- argv[1] address
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+    Buffer  (40byte) <- dummy*19 + shellcode(21)
+    SFP     (4byte)  <- shellcode(4)
+    RET     (4byte)  <- argv[1] 주소
+    argv[1] (4byte)  
     ----------------
     HIGH    
     ================

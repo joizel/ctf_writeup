@@ -7,7 +7,7 @@
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="argv[1]"];
+        a [shape=box, label="argv[1] value"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
         d [shape=box, label="RET"];
@@ -95,20 +95,20 @@ Buffer Overflow
 Overflow condition 
 
 - environ을 초기화하여 환경 변수 사용를 통한 쉘코드 삽입이 불가능하다.
-- argv[1]을 초기화하여 argv[1]로 버퍼오버플로우를 진행할 수 없다.
-- argv[1]의 47번째 문자열이 "\\xbf"이어야 함
-- argv[1]의 길이가 47이하 이어야 함
+- argv[1] 값의 47번째 문자가 "\\xbf"이어야 함
+- argv[1] 값의 길이가 48 미만 이어야 함
+- argv[1] 값을 초기화하여 argv[1] 주소로 버퍼오버플로우를 진행할 수 없다.
+
 
 .. code-block:: console
 
 	※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행
     $ bash2
-	$ ./troll `python -c 'print "a"*47'`
 
+	$ ./troll `python -c 'print "a"*47'`
 	stack is still your friend.
 
 	$ ./troll `python -c 'print "a"*47+"\xbf"'`
-
 	aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa▒
 	Segmentation fault
 
@@ -120,14 +120,15 @@ Overflow condition
 exploit
 ============================================================================================================
 
-기존 문제와 달리 argv[1]을 초기화 해버리기 때문에 argv[1]로 버퍼오버플로우를 진행할 수 없으므로, argv[0]에 쉘코드를 삽입하고 RET 주소를 argv[0] 주소로 변경하여야 한다.
+기존 문제와 달리 argv[1] 값을 초기화 해버리기 때문에 argv[1] 주소로 버퍼오버플로우를 진행할 수 없음.
+argv[0] 값에 쉘코드를 삽입하고, RET 주소를 argv[0] 주소로 변경하여야 한다.
 
-argv[0]에 쉘코드 삽입
+argv[0] 값에 쉘코드 삽입
 ------------------------------------------------------------------------------------------------------------
 
-기존에 사용한 쉘코드에는 "\x2f" 값이 있기 때문에 정상적으로 쉘코드가 동작하지 않는다.
+기존에 사용한 쉘코드에는 "\\x2f" 값이 있기 때문에 정상적으로 쉘코드가 동작하지 않는다.
 
-"\x2f"가 없는 쉘코드로 파일명을 생성하도록 한다.
+"\\x2f"가 없는 쉘코드로 파일명을 생성하도록 한다.
 
 .. code-block:: console
 	
@@ -141,7 +142,7 @@ argv[0]에 쉘코드 삽입
 	stack is still your friend.
 
 
-앞의 조건에 argv[1]을 초기화하기 때문에, gdb를 이용하여 argv[0]이 가리키는 주소를 찾는다.
+앞의 조건에 argv[1] 값을  초기화하기 때문에, gdb를 이용하여 argv[0] 주소를 찾는다.
 
 .. code-block:: console
 
@@ -216,9 +217,9 @@ RET 주소를 argv[0] 주소로 변경하여 공격 진행
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- "\x90"*19 + shellcode
-    SFP     (4byte)  <- shellcode
-    RET     (4byte)  <- argv[0] address
+    Buffer  (40byte) <- "\x90"*40
+    SFP     (4byte)  <- "\x90"*4
+    RET     (4byte)  <- argv[0] 주소
     argc    (4byte)  <- 0x00000002
     argv[0] (4byte)  <- argv[0] 주소
     argv[1] (4byte)  <- argv[1] 주소
@@ -228,7 +229,7 @@ RET 주소를 argv[0] 주소로 변경하여 공격 진행
 
 |
 
-오버플로우시 RET 주소를 argv[0]의 주소로 변경하여 해당 쉘코드가 실행되도록 한다. argv[0]의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
+오버플로우시 RET address를 argv[0] 주소로 변경하여 해당 쉘코드가 실행되도록 한다. argv[0] 주소의 최초 주소 값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
 
 filename : nop (100 byte) + shellcode (70 byte) 
 

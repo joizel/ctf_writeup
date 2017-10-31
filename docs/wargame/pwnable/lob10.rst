@@ -1,42 +1,27 @@
 ============================================================================================================
-[lob] vampire
+[redhat-lob] (10) skeleton
 ============================================================================================================
 
-.. uml::
-    
-    @startuml
 
-    start
+.. graphviz::
 
-    :Source Analysis;
+    digraph foo {
+        a -> b -> c -> d -> e;
 
-    :Memory Structure;
-
-    :Segmentation fault;
-
-    :argv[1]의 주소값 변경;
-
-    :RET 주소를 argv[1] 주소로 변경하여 공격 진행;
-    
-    stop
-
-    @enduml
+        a [shape=box, label="argv[1] value"];
+        b [shape=box, color=lightblue, label="strcpy"];
+        c [shape=box, label="Buffer Overflow"];
+        d [shape=box, label="RET"];
+        e [shape=box, label="program name address"];
+    }
 
 |
 
-Source Analysis
+Source Code
 ============================================================================================================
 
 
-해당 문제 소스코드는 다음과 같습니다.
-
 .. code-block:: c
-
-    /*
-    The Lord of the BOF : The Fellowship of the BOF
-        - skeleton
-        - argv hunter
-    */
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -85,21 +70,22 @@ Source Analysis
 
 |
 
-Memory Structure
+Vulnerabliity Vector
 ============================================================================================================
 
-스택 메모리 공간에 다음과 같이 들어가게 됩니다.
+스택 메모리 공간에 다음과 같이 들어가게 된다.
 
 .. code-block:: console
 
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- strcpy
+    Buffer  (40byte) 
     SFP     (4byte)
-    RET     (4byte)
-    argc    (4byte)
-    argv    (4byte)
+    RET     (4byte)  <- strcpy overflow
+    argc    (4byte)  <- 0x00000002
+    argv[0] (4byte)  <- argv[0] address
+    argv[1] (4byte)  <- argv[1] address
     ----------------
     HIGH    
     ================
@@ -109,11 +95,18 @@ Memory Structure
 Segmentation fault
 ============================================================================================================
 
-버퍼오버플로우가 일어나는 지점을 확인합니다.
+Overflow condition 
 
-※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행해야 합니다.
+- environ을 초기화하여 환경 변수 사용를 통한 쉘코드 삽입이 불가능하다.
+- argv[1] value의 47번째 문자가 "\\xbf"이어야 함
+- argv[1] 값의 길이가 48 미만 이어야 함
+- argv[0] 값, argv[1] 값을 초기화하여 argv[0], argv[1] 주소로 버퍼오버플로우를 진행할 수 없다.
+
 
 .. code-block:: console
+
+    ※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행.
+    $ bash2
 
     $ ./skeleton `python -c 'print "a"*47'`
     stack is still your friend.
@@ -129,12 +122,12 @@ exploit
 ============================================================================================================
 
 
-argv[0]에 쉘코드 삽입
+프로그램 이름에 쉘코드 삽입
 ------------------------------------------------------------------------------------------------------------
 
-기존에 사용한 쉘코드에는 \x2f 값이 있기 때문에 정상적으로 쉘코드가 동작하지 않습니다.
+기존에 사용한 쉘코드에는 "\\x2f" 값이 있기 때문에 정상적으로 쉘코드가 동작하지 않는다.
 
-\x2f가 없는 쉘코드로 파일명을 생성하도록 합니다.
+"\\x2f"가 없는 쉘코드로 파일명을 생성하도록 한다.
 
 .. code-block:: console
     
@@ -179,10 +172,30 @@ argv[0]에 쉘코드 삽입
 program명 주소를 찾아서 RET로 덮어씌우면 됩니다.
 
 
-RET 주소를 argv[0] 주소로 변경하여 공격 진행
+RET 주소를 프로그램 이름이 존재하는 주소로 변경하여 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
-filename : nop(100 byte) + shellcode (39 byte) 
+.. code-block:: console
+
+    ================
+    LOW     
+    ----------------
+    Buffer  (40byte) <- "\x90"*40
+    SFP     (4byte)  <- "\x90"*4
+    RET     (4byte)  <- 프로그램 이름 주소
+    argc    (4byte)  <- 0x00000002
+    argv[0] (4byte)  <- argv[0] 주소
+    argv[1] (4byte)  <- argv[1] 주소
+    ......
+    program name     <- 프로그램 이름
+    NULL
+    ----------------
+    HIGH    
+    ================
+
+|
+
+filename : nop(100 byte) + shellcode(39 byte) 
 
 argv[1] : nop(44 byte) + argv[0] address
 
