@@ -5,6 +5,16 @@ PWNABLE
 
 .. toctree::
     :maxdepth: 1
-    :glob:
-
-    *
+    
+    lob1
+    lob2
+    lob3
+    lob4
+    lob5
+    lob6
+    lob7
+    lob8
+    lob9
+    lob10
+    lob11
+    lob12

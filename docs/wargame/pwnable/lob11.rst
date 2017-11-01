@@ -2,16 +2,22 @@
 [redhat-lob] (11) golem
 ============================================================================================================
 
+
+공유 라이브러리 주소 : nop(40 byte) + shellcode (39 byte) 
+
+argv[1] : nop(44 byte) + 공유 라이브러리 주소
+
+
 .. graphviz::
 
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="argv[1] value"];
+        a [shape=box, label="dummy * 44 + shared libc address"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="program name address"];
+        d [shape=box, label="shared libc address"];
+        e [shape=box, label="dummy * 40 + shellcode"];
     }
 
 |
@@ -65,10 +71,10 @@ Vulnerabliity Vector
     ----------------
     Buffer  (40byte)
     SFP     (4byte)
-    RET     (4byte)  <- strcpy overflow
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] address
-    argv[1] (4byte)  <- argv[1] address
+    RET     (4byte)
+    argc    (4byte)
+    argv[0] (4byte)
+    argv[1] (4byte)
     ----------------
     HIGH    
     ================
@@ -170,22 +176,16 @@ RET 주소를 공유 라이브러리 로드 주소로 변경하여 공격 진행
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- "\x90"*40
-    SFP     (4byte)  <- "\x90"*4
-    RET     (4byte)  <- shared libc address
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+    shared libc
+    Buffer  (40byte) <- dummy*40
+    SFP     (4byte)  <- dummy*4
+    RET     (4byte)  <- shared libc 주소
     ----------------
     HIGH    
     ================
 
 |
 
-
-공유 라이브러리 주소 : nop(40 byte) + shellcode (39 byte) 
-
-argv[1] : nop(44 byte) + 공유 라이브러리 주소
 
 .. code-block:: console
 

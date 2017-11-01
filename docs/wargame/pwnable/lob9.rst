@@ -6,13 +6,12 @@
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d -> e;
+        a -> b -> c -> d;
 
-        a [shape=box, label="argv[1] value"];
+        a [shape=box, label="dummy * 44 + (argv[1] address+4*i) + dummy * 100000 + shellcode"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="argv[1] address"];
+        d [shape=box, label="shellcode address"];
     }
 
 
@@ -121,7 +120,7 @@ argv[1]의 주소가 "\\xbf\\xff"로 시작하기 때문에 argv[1]에 nop를 10
 
 |
 
-RET 주소를 argv[1] 주소로 변경하여 공격 진행
+RET를 argv[1] 주소로 덮어씌워 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
@@ -129,19 +128,18 @@ RET 주소를 argv[1] 주소로 변경하여 공격 진행
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- "\x90"*40
-    SFP     (4byte)  <- "\x90"*4
-    RET     (4byte)  <- argv[1] address
-    argc    (4byte)  <- 0x00000002
-    argv    (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- "\x90"*100000 + shellcode
+    Buffer  (40byte) <- dummy*40
+    SFP     (4byte)  <- dummy*4
+    RET     (4byte)  <- shellcode address
+    argv[1] (4byte)  <- dummy*100000 + shellcode
     ----------------
     HIGH    
     ================
 
 |
 
-nop (44 byte) + argv[1] address + nop (100000 byte) + shellcode (25 byte)
+
+오버플로우시 RET를 shellcode를 삽입한 주소로 덮어씌워 해당 쉘코드가 실행되도록 한다. buffer의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
 
 .. code-block:: console
 

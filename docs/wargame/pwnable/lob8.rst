@@ -5,13 +5,12 @@
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d -> e;
+        a -> b -> c -> d -> a;
 
-        a [shape=box, label="argv[1] value"];
+        a [shape=box, label="dummy * 19 + shellcode + (argv[0] address+4*i)"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="argv[0] address"];
+        d [shape=box, label="(argv[0] address+4*i)"];
     }
 
 |
@@ -78,10 +77,9 @@ Vulnerabliity Vector
 	----------------
 	Buffer  (40byte)
 	SFP     (4byte)
-	RET     (4byte)  <- strcpy overflow
-	argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+	RET     (4byte)
+	argc    (4byte)
+    argv    (4byte)  <
 	----------------
 	HIGH    
 	================
@@ -209,7 +207,7 @@ argv[0] 값에 쉘코드 삽입
 
 |
 
-RET 주소를 argv[0] 주소로 변경하여 공격 진행
+RET를 argv[0] 주소로 덮어씌워 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
@@ -217,24 +215,17 @@ RET 주소를 argv[0] 주소로 변경하여 공격 진행
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- "\x90"*40
-    SFP     (4byte)  <- "\x90"*4
+    Buffer  (40byte) <- dummy*40
+    SFP     (4byte)  <- dummy*4
     RET     (4byte)  <- argv[0] 주소
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
+    argv[0] (4byte)  <- dummy*100 + shellcode(70)
     ----------------
     HIGH    
     ================
 
 |
 
-오버플로우시 RET address를 argv[0] 주소로 변경하여 해당 쉘코드가 실행되도록 한다. argv[0] 주소의 최초 주소 값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
-
-filename : nop (100 byte) + shellcode (70 byte) 
-
-argv[1] : nop (19 byte) + shellcode (25 byte) + argv[0] address
-
+오버플로우시 RET를 argv[0] 주소로 덮어씌워 해당 쉘코드가 실행되도록 한다. argv[0] 주소의 최초 주소 값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
 
 
 .. code-block:: console

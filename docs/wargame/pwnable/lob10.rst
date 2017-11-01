@@ -2,17 +2,15 @@
 [redhat-lob] (10) skeleton
 ============================================================================================================
 
-
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d -> e;
+        a -> b -> c -> d;
 
-        a [shape=box, label="argv[1] value"];
+        a [shape=box, label="dummy * 44 + program name address"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="RET"];
-        e [shape=box, label="program name address"];
+        d [shape=box, label="program name address"];
     }
 
 |
@@ -82,10 +80,12 @@ Vulnerabliity Vector
     ----------------
     Buffer  (40byte) 
     SFP     (4byte)
-    RET     (4byte)  <- strcpy overflow
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] address
-    argv[1] (4byte)  <- argv[1] address
+    RET     (4byte) 
+    argc    (4byte)
+    argv    (4byte)  
+    ......
+    program name     <
+    NULL
     ----------------
     HIGH    
     ================
@@ -172,7 +172,7 @@ exploit
 program명 주소를 찾아서 RET로 덮어씌우면 됩니다.
 
 
-RET 주소를 프로그램 이름이 존재하는 주소로 변경하여 공격 진행
+RET를 프로그램 이름이 존재하는 주소로 덮어씌워 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
@@ -180,24 +180,15 @@ RET 주소를 프로그램 이름이 존재하는 주소로 변경하여 공격 
     ================
     LOW     
     ----------------
-    Buffer  (40byte) <- "\x90"*40
-    SFP     (4byte)  <- "\x90"*4
-    RET     (4byte)  <- 프로그램 이름 주소
-    argc    (4byte)  <- 0x00000002
-    argv[0] (4byte)  <- argv[0] 주소
-    argv[1] (4byte)  <- argv[1] 주소
-    ......
-    program name     <- 프로그램 이름
-    NULL
+    Buffer  (40byte) <- dummy*40
+    SFP     (4byte)  <- dummy*4
+    RET     (4byte)  <- program name 주소
+    program name     
     ----------------
     HIGH    
     ================
 
 |
-
-filename : nop(100 byte) + shellcode(39 byte) 
-
-argv[1] : nop(44 byte) + argv[0] address
 
 .. code-block:: console
 

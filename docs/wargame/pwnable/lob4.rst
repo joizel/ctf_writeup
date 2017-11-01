@@ -6,13 +6,12 @@
 .. graphviz::
 
     digraph foo {
-        a -> b -> c -> d -> e;
+        a -> b -> c -> d -> a;
 
-        a [shape=box, label="dummy * 19 + shellcode + argv[1] address"];
+        a [shape=box, label="dummy * 19 + shellcode + (argv[1] address+4*i)"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="argv[1] address"];
-        e [shape=box, label="dummy * 19 + shellcode"];
+        d [shape=box, label="(argv[1] address+4*i)"];
     }
 
 
@@ -165,7 +164,7 @@ argv[1]이 저장되는 주소 확인
 
 
 
-RET를 argv[1] 주소로 변경하여 공격 진행
+RET를 argv[1] 주소로 덮어씌워 공격 진행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
@@ -183,7 +182,7 @@ RET를 argv[1] 주소로 변경하여 공격 진행
 
 |
 
-오버플로우시 RET 주소를 argv[1] 주소로 변경하여 해당 쉘코드가 실행되도록 한다. buffer의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
+오버플로우시 RET를 argv[1] 주소로 덮어씌워 해당 쉘코드가 실행되도록 한다. buffer의 최초 주소값을 확인하여 4바이트씩 증가하면서 주소를 변경하면서 공격을 진행하면 성공시킬 수 있다.
 
 .. code-block:: console
 
