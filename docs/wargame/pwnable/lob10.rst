@@ -71,24 +71,33 @@ Source Code
 Vulnerabliity Vector
 ============================================================================================================
 
-스택 메모리 공간에 다음과 같이 들어가게 된다.
+main 함수의 ret를 덮어씌워 오버플로우를 발생시킨다.
 
 .. code-block:: console
 
-    ================
+    ==============================
     LOW     
-    ----------------
-    Buffer  (40byte) 
-    SFP     (4byte)
-    RET     (4byte) 
-    argc    (4byte)
-    argv    (4byte)  
-    ......
-    program name     <
+    ------------------------------
+    local variables of main
+    saved registers of main
+    return address of main <<- overflow
+    argc
+    argv
+    envp
+    stack from startup code
+    argc
+    argv pointers
+    NULL that ends argv[]
+    environment pointers
+    NULL that ends envp[]
+    ELF Auxiliary Table
+    argv strings
+    environment strings
+    program name
     NULL
-    ----------------
-    HIGH    
-    ================
+    ------------------------------
+    HIGH (0xC0000000)    
+    ==============================
 
 |
 
@@ -172,21 +181,34 @@ exploit
 program명 주소를 찾아서 RET로 덮어씌우면 됩니다.
 
 
-RET를 프로그램 이름이 존재하는 주소로 덮어씌워 공격 진행
+program name 쉘코드 실행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
 
-    ================
+    ==============================
     LOW     
-    ----------------
-    Buffer  (40byte) <- dummy*40
-    SFP     (4byte)  <- dummy*4
-    RET     (4byte)  <- program name 주소
-    program name     
-    ----------------
-    HIGH    
-    ================
+    ------------------------------
+    local variables of main
+    saved registers of main
+    return address of main <<- overflow
+    argc
+    argv
+    envp
+    stack from startup code
+    argc
+    argv pointers
+    NULL that ends argv[]
+    environment pointers
+    NULL that ends envp[]
+    ELF Auxiliary Table
+    argv strings
+    environment strings
+    program name ->> shellcode
+    NULL
+    ------------------------------
+    HIGH (0xC0000000)    
+    ==============================
 
 |
 

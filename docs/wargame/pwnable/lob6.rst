@@ -66,22 +66,33 @@ Source Code
 Vulnerabliity Vector
 ============================================================================================================
 
-스택 메모리 공간에 다음과 같이 들어가게 된다.
+main 함수의 ret를 덮어씌워 오버플로우를 발생시킨다.
 
 .. code-block:: console
 
-    ================
+    ==============================
     LOW     
-    ----------------
-    Buffer  (40byte)
-    SFP     (4byte)
-    RET     (4byte)
-    argc    (4byte)
-    argv    (4byte)  <
-    ----------------
-    HIGH    
-    ================
-
+    ------------------------------
+    local variables of main
+    saved registers of main
+    return address of main <<- overflow
+    argc
+    argv
+    envp
+    stack from startup code
+    argc
+    argv pointers
+    NULL that ends argv[]
+    environment pointers
+    NULL that ends envp[]
+    ELF Auxiliary Table
+    argv strings
+    environment strings
+    program name
+    NULL
+    ------------------------------
+    HIGH (0xC0000000)    
+    ==============================
 
 |
 
@@ -174,21 +185,34 @@ argv[1]이 저장되는 주소 확인
 
 |
 
-RET를 argv[1] 주소로 덮어씌워 공격 진행
+argv[1] pointers 쉘코드 실행
 ------------------------------------------------------------------------------------------------------------
 
 .. code-block:: console
 
-    ================
+    ==============================
     LOW     
-    ----------------
-    Buffer  (40byte) <- dummy*19 + shellcode(21)
-    SFP     (4byte)  <- shellcode(4)
-    RET     (4byte)  <- argv[1] 주소
-    argv[1] (4byte)  
-    ----------------
-    HIGH    
-    ================
+    ------------------------------
+    local variables of main
+    saved registers of main
+    return address of main <<- overflow
+    argc
+    argv
+    envp
+    stack from startup code
+    argc
+    argv pointers ->> shellcode
+    NULL that ends argv[]
+    environment pointers
+    NULL that ends envp[]
+    ELF Auxiliary Table
+    argv strings
+    environment strings
+    program name
+    NULL
+    ------------------------------
+    HIGH (0xC0000000)    
+    ==============================
 
 |
 
