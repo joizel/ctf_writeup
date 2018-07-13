@@ -186,7 +186,6 @@ UserKey값은 3번째 인자값을 다음과 같이 변행하여 적용한다.
 
 .. code-block:: c#
 
-
     // CrackMe.CryptoOperation
     private byte[] CombineKeys(byte[] UserKey)
     {
