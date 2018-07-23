@@ -33,7 +33,7 @@ solve
 - 파라미터 조건을 만족할 경우 solution.php 파일을 읽을 수 있습니다.
 
 
-.. code-blcok:: python
+.. code-block:: python
 
 
     bacon_list = {
