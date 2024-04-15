@@ -4,3 +4,4 @@ Joizel CTF Write up
 
 - Read the docs
 - github
+- push test
